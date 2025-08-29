@@ -1,0 +1,3041 @@
+for Key, Object in pairs(getgc(true)) do
+	if type(Object) == 'table' then
+		setreadonly(Object, false)
+		local indexInstance = rawget(Object, 'indexInstance')
+		if type(indexInstance) == 'table' and indexInstance[1] == 'kick' then
+			setreadonly(indexInstance, false)
+			rawset(Object, 'Table', {
+				'kick',
+				function()
+					coroutine.yield()
+				end,
+			})
+			break
+		end
+	end
+end
+--
+assert(getrawmetatable)
+grm = getrawmetatable(game)
+setreadonly(grm, false)
+old = grm.__namecall
+
+grm.__namecall = newcclosure(function(self, ...)
+	local args = { ... }
+
+	local methodName = tostring(args[1])
+
+	local blockedMethods = {
+		'TeleportDetect',
+		'CHECKER_1',
+		'CHECKER',
+		'GUI_CHECK',
+		'OneMoreTime',
+		'checkingSPEED',
+		'BANREMOTE',
+		'PERMAIDBAN',
+		'KICKREMOTE',
+		'BR_KICKPC',
+		'BR_KICKMOBILE',
+	}
+
+	if table.find(blockedMethods, methodName) then
+		return
+	end
+
+	return old(self, ...)
+end)
+
+wait(1)
+
+if not LPH_OBFUSCATED then
+	getfenv().LPH_NO_VIRTUALIZE = function(a)
+		return a
+	end
+end
+local a = {
+	blazedLoader = Instance.new('ScreenGui'),
+	Frame = Instance.new('Frame'),
+	UICorner = Instance.new('UICorner'),
+	TextLabel = Instance.new('TextLabel'),
+	TextLabel_1 = Instance.new('TextLabel'),
+	signin_load = Instance.new('TextButton'),
+	UICorner_1 = Instance.new('UICorner'),
+	UIStroke = Instance.new('UIStroke'),
+	TextLabel_2 = Instance.new('TextLabel'),
+	fps_checkbox = Instance.new('Frame'),
+	UICorner_2 = Instance.new('UICorner'),
+	UICorner_3 = Instance.new('UICorner'),
+	UIStroke_1 = Instance.new('UIStroke'),
+	ImageLabel = Instance.new('ImageLabel'),
+	fpscheckbox_button = Instance.new('TextButton'),
+	TextLabel_3 = Instance.new('TextLabel'),
+	UICorner_4 = Instance.new('UICorner'),
+	UIStroke_2 = Instance.new('UIStroke'),
+	UIStroke_3 = Instance.new('UIStroke'),
+}
+a.blazedLoader.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+a.blazedLoader.Name = 'blazedLoader'
+a.blazedLoader.Parent = game:GetService('CoreGui')
+a.Frame.BorderSizePixel = 0
+a.Frame.Size = UDim2.new(0, 396, 0, 249)
+a.Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+a.Frame.Name = 'Frame'
+a.Frame.Position = UDim2.new(0.396226, 0, 0.362031, 0)
+a.Frame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+a.Frame.Parent = a.blazedLoader
+a.UICorner.Name = 'UICorner'
+a.UICorner.CornerRadius = UDim.new(0, 12)
+a.UICorner.Parent = a.Frame
+a.TextLabel.BorderSizePixel = 0
+a.TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+a.TextLabel.FontFace = Font.new(
+	'rbxassetid://11702779517',
+	Enum.FontWeight.Bold,
+	Enum.FontStyle.Normal
+)
+a.TextLabel.TextSize = 30
+a.TextLabel.Position = UDim2.new(0.244949, 0, 0.11245, 0)
+a.TextLabel.Size = UDim2.new(0, 147, 0, 50)
+a.TextLabel.Name = 'TextLabel'
+a.TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+a.TextLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
+a.TextLabel.Text = 'Coolbrain'
+a.TextLabel.BackgroundTransparency = 1
+a.TextLabel.Parent = a.Frame
+a.TextLabel_1.BorderSizePixel = 0
+a.TextLabel_1.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+a.TextLabel_1.FontFace = Font.new(
+	'rbxassetid://11702779517',
+	Enum.FontWeight.Bold,
+	Enum.FontStyle.Normal
+)
+a.TextLabel_1.TextSize = 20
+a.TextLabel_1.Position = UDim2.new(0.479798, 0, 0.11245, 0)
+a.TextLabel_1.Size = UDim2.new(0, 106, 0, 57)
+a.TextLabel_1.Name = 'TextLabel'
+a.TextLabel_1.TextColor3 = Color3.fromRGB(227, 181, 200)
+a.TextLabel_1.BorderColor3 = Color3.fromRGB(0, 0, 0)
+a.TextLabel_1.Text = '         v3.1.1'
+a.TextLabel_1.BackgroundTransparency = 1
+a.TextLabel_1.Parent = a.Frame
+a.signin_load.BorderSizePixel = 0
+a.signin_load.BackgroundColor3 = Color3.fromRGB(157, 125, 138)
+a.signin_load.FontFace = Font.new(
+	'rbxassetid://11702779517',
+	Enum.FontWeight.Bold,
+	Enum.FontStyle.Normal
+)
+a.signin_load.TextColor3 = Color3.fromRGB(255, 255, 255)
+a.signin_load.Position = UDim2.new(0.161616, 0, 0.598394, 0)
+a.signin_load.TextSize = 14
+a.signin_load.Size = UDim2.new(0, 274, 0, 31)
+a.signin_load.Name = 'signin_load'
+a.signin_load.BorderColor3 = Color3.fromRGB(0, 0, 0)
+a.signin_load.Text = 'Sign In Nigga'
+a.signin_load.Active = true
+a.signin_load.Selectable = true
+a.signin_load.Parent = a.Frame
+a.UICorner_1.Name = 'UICorner'
+a.UICorner_1.Parent = a.signin_load
+a.UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+a.UIStroke.Name = 'UIStroke'
+a.UIStroke.Thickness = 1.4
+a.UIStroke.Color = Color3.fromRGB(25, 25, 25)
+a.UIStroke.Parent = a.signin_load
+a.TextLabel_2.BorderSizePixel = 0
+a.TextLabel_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+a.TextLabel_2.FontFace = Font.new(
+	'rbxassetid://11702779517',
+	Enum.FontWeight.Bold,
+	Enum.FontStyle.Normal
+)
+a.TextLabel_2.TextSize = 15
+a.TextLabel_2.Position = UDim2.new(0.290404, 0, 0.690763, 0)
+a.TextLabel_2.Size = UDim2.new(0, 200, 0, 50)
+a.TextLabel_2.Name = 'TextLabel'
+a.TextLabel_2.TextColor3 = Color3.fromRGB(255, 255, 255)
+a.TextLabel_2.BorderColor3 = Color3.fromRGB(0, 0, 0)
+a.TextLabel_2.Text = 'Boost FPS'
+a.TextLabel_2.BackgroundTransparency = 1
+a.TextLabel_2.Parent = a.Frame
+a.fps_checkbox.BorderSizePixel = 0
+a.fps_checkbox.Size = UDim2.new(0, 20, 0, 20)
+a.fps_checkbox.BorderColor3 = Color3.fromRGB(0, 0, 0)
+a.fps_checkbox.Name = 'fps_checkbox'
+a.fps_checkbox.Position = UDim2.new(0.383838, 0, 0.751004, 0)
+a.fps_checkbox.BackgroundColor3 = Color3.fromRGB(157, 125, 138)
+a.fps_checkbox.Parent = a.Frame
+a.UICorner_2.Name = 'UICorner'
+a.UICorner_2.CornerRadius = UDim.new(0, 5)
+a.UICorner_2.Parent = a.fps_checkbox
+a.UICorner_3.Name = 'UICorner'
+a.UICorner_3.Parent = a.fps_checkbox
+a.UIStroke_1.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+a.UIStroke_1.Name = 'UIStroke'
+a.UIStroke_1.Thickness = 1.4
+a.UIStroke_1.Color = Color3.fromRGB(25, 25, 25)
+a.UIStroke_1.Parent = a.fps_checkbox
+a.ImageLabel.BorderSizePixel = 0
+a.ImageLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+a.ImageLabel.Image = 'http://www.roblox.com/asset/?id=9754130783'
+a.ImageLabel.Size = UDim2.new(0, 20, 0, 20)
+a.ImageLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
+a.ImageLabel.Name = 'ImageLabel'
+a.ImageLabel.BackgroundTransparency = 1
+a.ImageLabel.Parent = a.fps_checkbox
+a.fpscheckbox_button.BorderSizePixel = 0
+a.fpscheckbox_button.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+a.fpscheckbox_button.FontFace = Font.new(
+	'rbxasset://fonts/families/SourceSansPro.json',
+	Enum.FontWeight.Regular,
+	Enum.FontStyle.Normal
+)
+a.fpscheckbox_button.TextColor3 = Color3.fromRGB(0, 0, 0)
+a.fpscheckbox_button.Position = UDim2.new(-2.7, 0, 0, 0)
+a.fpscheckbox_button.TextSize = 14
+a.fpscheckbox_button.Size = UDim2.new(0, 200, 0, 20)
+a.fpscheckbox_button.Name = 'fpscheckbox_button'
+a.fpscheckbox_button.BorderColor3 = Color3.fromRGB(0, 0, 0)
+a.fpscheckbox_button.Text = ''
+a.fpscheckbox_button.Active = true
+a.fpscheckbox_button.BackgroundTransparency = 1
+a.fpscheckbox_button.Selectable = true
+a.fpscheckbox_button.Parent = a.fps_checkbox
+a.TextLabel_3.BorderSizePixel = 0
+a.TextLabel_3.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+a.TextLabel_3.FontFace = Font.new(
+	'rbxassetid://11702779517',
+	Enum.FontWeight.Bold,
+	Enum.FontStyle.Normal
+)
+a.TextLabel_3.TextSize = 14
+a.TextLabel_3.Position = UDim2.new(0.161616, 0, 0.425703, 0)
+a.TextLabel_3.Size = UDim2.new(0, 274, 0, 36)
+a.TextLabel_3.Name = 'TextLabel'
+a.TextLabel_3.TextColor3 = Color3.fromRGB(50, 50, 50)
+a.TextLabel_3.BorderColor3 = Color3.fromRGB(0, 0, 0)
+a.TextLabel_3.Text = '   ' .. tostring(LRM_LinkedDiscordID) .. ''
+a.TextLabel_3.TextXAlignment = Enum.TextXAlignment.Left
+a.TextLabel_3.Parent = a.Frame
+a.UICorner_4.Name = 'UICorner'
+a.UICorner_4.Parent = a.TextLabel_3
+a.UIStroke_2.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+a.UIStroke_2.Name = 'UIStroke'
+a.UIStroke_2.Thickness = 1.4
+a.UIStroke_2.Color = Color3.fromRGB(25, 25, 25)
+a.UIStroke_2.Parent = a.TextLabel_3
+a.UIStroke_3.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+a.UIStroke_3.Name = 'UIStroke'
+a.UIStroke_3.Thickness = 1.4
+a.UIStroke_3.Color = Color3.fromRGB(25, 25, 25)
+a.UIStroke_3.Parent = a.Frame
+a.fpscheckbox_button.MouseButton1Click:Connect(function()
+	if a.fps_checkbox.BackgroundColor3 == Color3.fromRGB(157, 125, 138) then
+		a.fps_checkbox.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+		a.ImageLabel.Visible = false
+		getgenv().boostframes = false
+	elseif a.fps_checkbox.BackgroundColor3 == Color3.fromRGB(20, 20, 20) then
+		getgenv().boostframes = true
+		a.fps_checkbox.BackgroundColor3 = Color3.fromRGB(157, 125, 138)
+		a.ImageLabel.Visible = true
+	end
+end)
+a.signin_load.MouseButton1Click:Connect(function()
+	a.blazedLoader:Destroy()
+	local a = tick()
+	local b = loadstring(
+		game:HttpGet(
+			'https://raw.githubusercontent.com/laagginq/ui-libraries/main/xaxas-notification/src.lua'
+		)
+	)()
+	local b = b.new({
+		NotificationLifetime = 5,
+		NotificationPosition = 'Middle',
+		TextFont = Enum.Font.Code,
+		TextColor = Color3.fromRGB(255, 255, 255),
+		TextSize = 15,
+		TextStrokeTransparency = 0,
+		TextStrokeColor = Color3.fromRGB(0, 0, 0),
+	})
+	local c = loadstring(
+		game:HttpGet(
+			'https://raw.githubusercontent.com/Kinlei/Dynissimo/main/Scripts/AkaliNotif.lua'
+		)
+	)()
+	local c = c.Notify
+	function Kick(a)
+		game.Players.LocalPlayer:Kick(a)
+	end
+	getgenv().NotiMode = 'Roblox'
+	function Notifications(a)
+		if getgenv().NotiMode == 'Roblox' then
+			game:GetService('StarterGui'):SetCore(
+				'SendNotification',
+				{ Title = 'Coolbrain.lol', Text = a, Icon = '' }
+			)
+		else
+			if getgenv().NotiMode == 'Xaxa' then
+				b:BuildNotificationUI()
+				b:Notify(a)
+			else
+				if getgenv().NotiMode == 'Akali' then
+					c({ Description = a, Title = 'Coolbrain', Duration = 1 })
+				else
+					Kick(
+						'[Coolbrain]: Notification Error, please contact support if this continues.'
+					)
+				end
+			end
+		end
+	end
+	if
+		game.PlaceId == 11883610532
+		or game.PlaceId == 12128125888
+		or game.PlaceId == 12543953865
+	then
+		print('[Coolbrain.lol]: Five Duels Detected')
+		getgenv().fdDetected = true
+		getgenv().AimPart = 'HumanoidRootPart'
+		getgenv().OldAimPart = 'HumanoidRootPart'
+		getgenv().AimlockKey = 'q'
+		getgenv().AimRadius = 5
+		getgenv().ThirdPerson = true
+		getgenv().FirstPerson = true
+		getgenv().TeamCheck = false
+		getgenv().PredictMovement = false
+		getgenv().PredictionVelocity = 7.22
+		getgenv().Smoothness = false
+		getgenv().SmoothnessAmount = 1
+		getgenv().EasingStyle = Enum.EasingStyle.Elastic
+		getgenv().Notifications = false
+		getgenv().AutoPrediction = false
+		getgenv().UnlockOnDeath = false
+		getgenv().Shake = false
+		getgenv().ShakePower = 0
+		local c, d, d, e =
+			game:GetService('Players'),
+			game:GetService('UserInputService'),
+			game:GetService('RunService'),
+			game:GetService('StarterGui')
+		local e, f, g, h, i, j, j =
+			c.LocalPlayer,
+			c.LocalPlayer:GetMouse(),
+			workspace.CurrentCamera,
+			CFrame.new,
+			Ray.new,
+			Vector3.new,
+			Vector2.new
+		local j, k, l = true, false, false
+		local m
+		local n
+		getgenv().WorldToViewportPoint = function(a)
+			return g:WorldToViewportPoint(a)
+		end
+		getgenv().WorldToScreenPoint = function(a)
+			return g.WorldToScreenPoint(g, a)
+		end
+		getgenv().GetObscuringObjects = function(a)
+			if
+				a
+				and a:FindFirstChild(getgenv().AimPart)
+				and e
+				and e.Character:FindFirstChild('Head')
+			then
+				local b = workspace:FindPartOnRay(
+					i(a[getgenv().AimPart].Position, e.Character.Head.Position)
+				)
+				if b then
+					return b:IsDescendantOf(a)
+				end
+			end
+		end
+		getgenv().GetNearestTarget = function()
+			local a = {}
+			local b = {}
+			local d = {}
+			for b, b in pairs(c:GetPlayers()) do
+				if b ~= e then
+					table.insert(a, b)
+				end
+			end
+			for a, c in pairs(a) do
+				if c.Character ~= nil then
+					local g = c.Character:FindFirstChild('Head')
+					if getgenv().TeamCheck == true and c.Team ~= e.Team then
+						local e = (
+							c.Character:FindFirstChild('Head').Position
+							- game.Workspace.CurrentCamera.CFrame.p
+						).magnitude
+						local f = Ray.new(
+							game.Workspace.CurrentCamera.CFrame.p,
+							(f.Hit.p - game.Workspace.CurrentCamera.CFrame.p).unit
+								* e
+						)
+						local f, f =
+							game.Workspace:FindPartOnRay(f, game.Workspace)
+						local f = math.floor((f - g.Position).magnitude)
+						b[c.Name .. a] = {}
+						b[c.Name .. a].dist = e
+						b[c.Name .. a].plr = c
+						b[c.Name .. a].diff = f
+						table.insert(d, f)
+					elseif
+						getgenv().TeamCheck == false and c.Team == e.Team
+					then
+						local e = (
+							c.Character:FindFirstChild('Head').Position
+							- game.Workspace.CurrentCamera.CFrame.p
+						).magnitude
+						local f = Ray.new(
+							game.Workspace.CurrentCamera.CFrame.p,
+							(f.Hit.p - game.Workspace.CurrentCamera.CFrame.p).unit
+								* e
+						)
+						local f, f =
+							game.Workspace:FindPartOnRay(f, game.Workspace)
+						local f = math.floor((f - g.Position).magnitude)
+						b[c.Name .. a] = {}
+						b[c.Name .. a].dist = e
+						b[c.Name .. a].plr = c
+						b[c.Name .. a].diff = f
+						table.insert(d, f)
+					end
+				end
+			end
+			if unpack(d) == nil then
+				return nil
+			end
+			local a = math.floor(math.min(unpack(d)))
+			if a > getgenv().AimRadius then
+				return nil
+			end
+			for b, b in pairs(b) do
+				if b.diff == a then
+					return b.plr
+				end
+			end
+			return nil
+		end
+		d.RenderStepped:Connect(function()
+			if
+				getgenv().ThirdPerson == true
+				and getgenv().FirstPerson == true
+			then
+				if
+					(g.Focus.p - g.CoordinateFrame.p).Magnitude > 1
+					or (g.Focus.p - g.CoordinateFrame.p).Magnitude <= 1
+				then
+					l = true
+				else
+					l = false
+				end
+			elseif
+				getgenv().ThirdPerson == true
+				and getgenv().FirstPerson == false
+			then
+				if (g.Focus.p - g.CoordinateFrame.p).Magnitude > 1 then
+					l = true
+				else
+					l = false
+				end
+			elseif
+				getgenv().ThirdPerson == false
+				and getgenv().FirstPerson == true
+			then
+				if (g.Focus.p - g.CoordinateFrame.p).Magnitude <= 1 then
+					l = true
+				else
+					l = false
+				end
+			end
+			if j == true and k == true then
+				if
+					m
+					and m.Character
+					and m.Character:FindFirstChild(getgenv().AimPart)
+				then
+					if getgenv().FirstPerson == true then
+						if l == true then
+							if getgenv().PredictMovement == true then
+								if getgenv().Smoothness == true then
+									local a = h(
+										g.CFrame.p,
+										m.Character[getgenv().AimPart].Position
+											+ m.Character[getgenv().AimPart].Velocity
+												/ PredictionVelocity
+									)
+									g.CFrame = g.CFrame:Lerp(
+										a,
+										getgenv().SmoothnessAmount,
+										getgenv().EasingStyle,
+										Enum.EasingDirection.InOut
+									)
+								else
+									g.CFrame = h(
+										g.CFrame.p,
+										m.Character[getgenv().AimPart].Position
+											+ m.Character[getgenv().AimPart].Velocity
+												/ PredictionVelocity
+									)
+								end
+							elseif getgenv().PredictMovement == false then
+								if getgenv().Smoothness == true then
+									local a = h(
+										g.CFrame.p,
+										m.Character[getgenv().AimPart].Position
+									)
+									g.CFrame = g.CFrame:Lerp(
+										a,
+										getgenv().SmoothnessAmount,
+										getgenv().EasingStyle,
+										Enum.EasingDirection.InOut
+									)
+								else
+									g.CFrame = h(
+										g.CFrame.p,
+										m.Character[getgenv().AimPart].Position
+									)
+								end
+							end
+						end
+					end
+				end
+			end
+			if
+				getgenv().UnlockOnDeath == true
+				and m
+				and m.Character:FindFirstChild('Humanoid')
+			then
+				if
+					m.StarterPlayer.StarterCharacterScripts.BodyEffects['K.O']
+				then
+					m = nil
+					if getgenv().Notifications == true then
+						Notify({
+							Title = Coolbrain.lol,
+							Description = 'Unlocked',
+							Duration = 1,
+						})
+					end
+					if getgenv().ChatNotis == true then
+						game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(
+							'Unlocked',
+							'All'
+						)
+					end
+				end
+			end
+			if getgenv().Shake == true and m and m.Character then
+				local a = h(
+					g.CFrame.p,
+					m.Character[getgenv().AimPart].Position
+						+ m.Character[getgenv().AimPart].Velocity / PredictionVelocity
+						+ Vector3.new(
+								math.random(
+									-getgenv().ShakePower,
+									getgenv().ShakePower
+								),
+								math.random(
+									-getgenv().ShakePower,
+									getgenv().ShakePower
+								),
+								math.random(
+									-getgenv().ShakePower,
+									getgenv().ShakePower
+								)
+							)
+							* 0.1
+				)
+				g.CFrame = g.CFrame:Lerp(
+					a,
+					getgenv().SmoothnessAmount,
+					getgenv().EasingStyle,
+					Enum.EasingDirection.InOut
+				)
+			end
+			if getgenv().AutoPrediction == true then
+				pingvalue =
+					game:GetService('Stats').Network.ServerStatsItem['Data Ping']
+						:GetValueString()
+				split = string.split(pingvalue, '(')
+				ping = tonumber(split[1])
+				if ping < 30 then
+					getgenv().PredictionVelocity = 7.758
+				elseif ping < 40 then
+					getgenv().PredictionVelocity = 7.364
+				elseif ping < 50 then
+					getgenv().PredictionVelocity = 7.456
+				elseif ping < 60 then
+					getgenv().PredictionVelocity = 7.217
+				elseif ping < 70 then
+					getgenv().PredictionVelocity = 6.972
+				elseif ping < 80 then
+					getgenv().PredictionVelocity = 6.782
+				elseif ping < 90 then
+					getgenv().PredictionVelocity = 6.597
+				elseif ping < 100 then
+					getgenv().PredictionVelocity = 3.88
+				elseif ping < 110 then
+					getgenv().PredictionVelocity = 6.099
+				end
+			end
+		end)
+		local c =
+			'https://raw.githubusercontent.com/wally-rblx/LinoriaLib/main/'
+		local c =
+			loadstring(game:HttpGet('https://pastebin.com/raw/7Tk5QM6R'))()
+		local d =
+			loadstring(game:HttpGet('https://pastebin.com/raw/WxMCy9be'))()
+		local e =
+			loadstring(game:HttpGet('https://pastebin.com/raw/rNY1ZdQT'))()
+		local f = c:CreateWindow({
+			Title = 'Coolbrain.lol | private build | five duels',
+			Center = true,
+			AutoShow = true,
+			Size = UDim2.fromOffset(550, 560),
+			TabPadding = 4,
+		})
+		local f =
+			{ Main = f:AddTab('Aiming'), ['Settings'] = f:AddTab('Settings') }
+		local g = f.Main:AddLeftGroupbox('Aimlock')
+		g:AddToggle(
+			'Aimlock',
+			{ Text = 'Enable', Default = false, Tooltip = 'Enables Aimlock' }
+		)
+		Toggles.Aimlock:OnChanged(function()
+			getgenv().AimlockEnabled = Toggles.Aimlock.Value
+		end)
+		Toggles.Aimlock:AddKeyPicker('AimlockBind', {
+			Default = 'None',
+			SyncToggleState = false,
+			Mode = 'Toggle',
+			Text = 'Enable',
+			NoUI = false,
+		})
+		Options.AimlockBind:OnClick(function()
+			if AimlockEnabled then
+				Target = not Target
+				if m then
+					m = nil
+					k = false
+					if getgenv().Notifications then
+						Notifications('Unlocked')
+					end
+				else
+					if m == nil then
+						local a
+						a = GetNearestTarget()
+						if a ~= nil then
+							m = a
+							if getgenv().Notifications then
+								b:BuildNotificationUI()
+								Notifications('Locked Onto' .. tostring(j))
+							end
+							k = true
+						end
+					end
+				end
+			end
+		end)
+		g:AddInput('CamPrediction', {
+			Default = '7.22',
+			Numeric = true,
+			Finished = false,
+			Text = 'Prediction',
+			Tooltip = 'Example: 7.22',
+			Placeholder = '...',
+			Callback = function(a)
+				getgenv().PredictionVelocity = a
+				b:BuildNotificationUI()
+				Notifications('Prediction Changed To: ' .. tostring(a))
+			end,
+		})
+		g:AddToggle('CamPingBased', {
+			Text = 'Ping Based',
+			Default = false,
+			Tooltip = 'Autos Configures Prediction',
+		})
+		Toggles.CamPingBased:OnChanged(function()
+			getgenv().AutoPrediction = Toggles.CamPingBased.Value
+		end)
+		g:AddDropdown('CamHitpart', {
+			Values = { 'HumanoidRootPart', 'UpperTorso', 'LowerTorso', 'Head' },
+			Default = 1,
+			Multi = false,
+			Text = 'Hitpart',
+			Tooltip = 'Where your bullets will hit',
+		})
+		Options.CamHitpart:OnChanged(function()
+			getgenv().AimPart = Options.CamHitpart.Value
+		end)
+		g:AddToggle('CamAlerts', {
+			Text = 'Notifications',
+			Default = false,
+			Tooltip = 'Notifys Locking/Unlocking',
+		})
+		Toggles.CamAlerts:OnChanged(function()
+			getgenv().Notifications = Toggles.CamAlerts.Value
+		end)
+		g:AddToggle('CamUnOnD', {
+			Text = 'Unlock On Death',
+			Default = false,
+			Tooltip = 'Automatically Unlocks Target On KO',
+		})
+		Toggles.CamUnOnD:OnChanged(function()
+			getgenv().UnlockOnDeath = Toggles.CamUnOnD.Value
+		end)
+		g:AddToggle(
+			'CamShake',
+			{
+				Text = 'Shake',
+				Default = false,
+				Tooltip = 'Shakes On The Target',
+			}
+		)
+		Toggles.CamShake:OnChanged(function()
+			getgenv().Shake = Toggles.CamShake.Value
+		end)
+		g:AddInput('CamShakePower', {
+			Default = '5',
+			Numeric = true,
+			Finished = false,
+			Text = 'Shake Power',
+			Tooltip = 'Ex: 5',
+			Placeholder = '...',
+			Callback = function(a)
+				getgenv().ShakePower = a
+				b:BuildNotificationUI()
+				Notifications('Shake Power Changed To: ' .. tostring(a))
+			end,
+		})
+		g:AddToggle(
+			'CamSmoothness',
+			{
+				Text = 'Smoothness',
+				Default = false,
+				Tooltip = 'Smoothens Camlock',
+			}
+		)
+		Toggles.CamSmoothness:OnChanged(function()
+			getgenv().Smoothness = Toggles.CamSmoothness.Value
+		end)
+		g:AddInput('CamSmoothnessPWR', {
+			Default = '1',
+			Numeric = true,
+			Finished = false,
+			Text = 'Smoothness Power',
+			Tooltip = 'Ex: 0.52',
+			Placeholder = '...',
+			Callback = function(a)
+				getgenv().SmoothnessAmount = a
+				b:BuildNotificationUI()
+				Notifications('Smoothness Power Changed To: ' .. tostring(a))
+			end,
+			0.01,
+		})
+		g:AddDropdown('CamSmoothingStyle', {
+			Values = {
+				'Linear',
+				'Sine',
+				'Back',
+				'Quad',
+				'Quart',
+				'Quint',
+				'Bounce',
+				'Elastic',
+				'Exponential',
+				'Circular',
+				'Cubic',
+			},
+			Default = 1,
+			Multi = false,
+			Text = 'Smoothing Style',
+			Tooltip = 'Aimlock Smoothing Style',
+		})
+		Options.CamSmoothingStyle:OnChanged(function()
+			if Options.CamSmoothingStyle.Value == 'Linear' then
+				getgenv().EasingStyle = Enum.EasingStyle.Linear
+			end
+			if Options.CamSmoothingStyle.Value == 'Sine' then
+				getgenv().EasingStyle = Enum.EasingStyle.Sine
+			end
+			if Options.CamSmoothingStyle.Value == 'Back' then
+				getgenv().EasingStyle = Enum.EasingStyle.Back
+			end
+			if Options.CamSmoothingStyle.Value == 'Quad' then
+				getgenv().EasingStyle = Enum.EasingStyle.Quad
+			end
+			if Options.CamSmoothingStyle.Value == 'Quart' then
+				getgenv().EasingStyle = Enum.EasingStyle.Quart
+			end
+			if Options.CamSmoothingStyle.Value == 'Quint' then
+				getgenv().EasingStyle = Enum.EasingStyle.Quint
+			end
+			if Options.CamSmoothingStyle.Value == 'Bounce' then
+				getgenv().EasingStyle = Enum.EasingStyle.Bounce
+			end
+			if Options.CamSmoothingStyle.Value == 'Elastic' then
+				getgenv().EasingStyle = Enum.EasingStyle.Elastic
+			end
+			if Options.CamSmoothingStyle.Value == 'Exponential' then
+				getgenv().EasingStyle = Enum.EasingStyle.Exponential
+			end
+			if Options.CamSmoothingStyle.Value == 'Circular' then
+				getgenv().EasingStyle = Enum.EasingStyle.Circular
+			end
+			if Options.CamSmoothingStyle.Value == 'Cubic' then
+				getgenv().EasingStyle = Enum.EasingStyle.Cubic
+			end
+		end)
+		local g = tick()
+		local h = 0
+		local i = 240
+		local g = game:GetService('RunService').RenderStepped:Connect(function()
+			h += 1
+			if (tick() - g) >= 1 then
+				i = h
+				g = tick()
+				h = 0
+			end
+			c:SetWatermark(
+				('Coolbrain.lol | %s fps | %s ms | Private Build '):format(
+					math.floor(i),
+					math.floor(
+						game:GetService('Stats').Network.ServerStatsItem['Data Ping']
+							:GetValue()
+					)
+				)
+			)
+			c:OnUnload(function()
+				c.Unloaded = true
+			end)
+		end)
+		local g = f['Settings']:AddRightGroupbox('Menu')
+		g:AddLabel('Menu Keybind'):AddKeyPicker(
+			'MenuKeybind',
+			{ Default = 'End', NoUI = true, Text = 'Menu keybind' }
+		)
+		g:AddToggle('KeybindList', {
+			Text = 'Keybind List',
+			Default = false,
+			Tooltip = 'Toggles the Keybind List',
+		})
+		Toggles.KeybindList:OnChanged(function()
+			c.KeybindFrame.Visible = Toggles.KeybindList.Value
+		end)
+		g:AddToggle(
+			'Watermark',
+			{
+				Text = 'Watermark',
+				Default = false,
+				Tooltip = 'Toggles the Watermark',
+			}
+		)
+		Toggles.Watermark:OnChanged(function()
+			c:SetWatermarkVisibility(Toggles.Watermark.Value)
+		end)
+		g:AddDropdown('UINotis', {
+			Values = { 'Xaxa', 'Roblox', 'Akali' },
+			Default = 2,
+			Multi = false,
+			Text = 'Notification Type',
+			Tooltip = 'Change What Notifications Show Up',
+		})
+		Options.UINotis:OnChanged(function()
+			getgenv().NotiMode = Options.UINotis.Value
+		end)
+		local g = g:AddButton({
+			Text = 'Unload',
+			Func = function()
+				c:Unload()
+			end,
+			DoubleClick = true,
+			Tooltip = 'Unloads The Cheat',
+		})
+		local b = g:AddButton({
+			Text = 'Join Discord',
+			Func = function()
+				setclipboard('discord.gg/aimware')
+				b:BuildNotificationUI()
+				Notifications('discord.gg/aimware')
+				local a = (syn and syn.request)
+					or (http and http.request)
+					or http_request
+				local b = game:GetService('HttpService')
+				if a then
+					a({
+						Url = 'http://127.0.0.1:6463/rpc?v=1',
+						Method = 'POST',
+						Headers = {
+							['Content-Type'] = 'application/json',
+							Origin = 'https://discord.com',
+						},
+						Body = b:JSONEncode({
+							cmd = 'INVITE_BROWSER',
+							nonce = b:GenerateGUID(false),
+							args = { code = 'lockers' },
+						}),
+					})
+				end
+			end,
+			DoubleClick = false,
+			Tooltip = 'Joins Our Discord',
+		})
+		c.ToggleKeybind = Options.MenuKeybind
+		d:SetLibrary(c)
+		e:SetLibrary(c)
+		d:SetFolder('coolbrainlol-thm')
+		e:SetFolder('coolbrainlol-fd-cfg')
+		e:BuildConfigSection(f['Settings'])
+		d:ApplyToTab(f['Settings'])
+		Notifications(
+			'Loaded In '
+				.. string.format('%.2f', tostring(tick() - a, nil))
+				.. tostring(' Seconds')
+		)
+		a = nil
+	else
+		Notifications('Coolbrain is loading!')
+		local c, c, c, d, e, e, f, f, f, f, f, f, f =
+			game:GetService('UserInputService'),
+			game:GetService('TeleportService'),
+			game:GetService('RunService'),
+			game:GetService('Workspace'),
+			game:GetService('Lighting'),
+			game:GetService('Players'),
+			game:GetService('HttpService'),
+			game:GetService('StarterGui'),
+			game:GetService('ReplicatedStorage'),
+			game:GetService('TweenService'),
+			game:GetService('VirtualUser'),
+			game:GetService('PathfindingService'),
+			game:GetService('Stats')
+		local f, g, h, i = Vector2.new, Vector3.new, CFrame.new, CFrame.Angles
+		local j, k = Color3.fromRGB, Color3.fromHex
+		local k, k, k, k, k, k =
+			table.find,
+			table.clear,
+			string.sub,
+			string.upper,
+			string.lower,
+			table.insert
+		local d, k, l = e.LocalPlayer:GetMouse(), d.Camera, e.LocalPlayer
+		local m, m, m, m, m, m, m, m, m, m, n =
+			math.huge,
+			math.pi,
+			math.clamp,
+			math.round,
+			math.abs,
+			math.floor,
+			math.random,
+			math.sin,
+			math.cos,
+			math.rad,
+			math.pi / 2
+		getgenv().Lock = {
+			Enabled = false,
+			Mode = '',
+			Locking = false,
+			Resolver = false,
+			LookAt = false,
+			ViewAt = false,
+			Target = { Player = nil, Part = nil, Position = nil, Angle = 0 },
+			ClosetPoint = false,
+			AntiAimViewer = false,
+			AntiCurve = false,
+			UnlockOnDeath = false,
+			ChatAlerts = false,
+			Visualize = {
+				Tracer = { false, nil },
+				Highlight = nil,
+				Dot = false,
+				Hitbox = false,
+				Strafe = false,
+				Notify = false,
+				X = 5,
+				Y = 8,
+				Z = 5,
+				TargetUI = nil,
+			},
+			Target_Strafe = { false, 0, 0, 0 },
+			Prediction = {
+				Part = nil,
+				Air = false,
+				Amount = 0.13,
+				PingBased = false,
+			},
+			Drawings = {},
+		}
+		getgenv().offset = 0.06
+		local n = getgenv().offset
+		function Lock:GetPlayerStatus(a)
+			if not a then
+				a = l
+			end
+			return a.Character
+					and a.Character:FindFirstChild('Humanoid')
+					and a.Character.Humanoid.Health > 0
+					and true
+				or false
+		end
+		function Lock:GetClosestPlayer()
+			local a = math.huge
+			local b
+			for c, c in pairs(e:GetPlayers()) do
+				if c ~= l and Lock:GetPlayerStatus(c) then
+					local e, f = k:WorldToViewportPoint(
+						c.Character.HumanoidRootPart.Position
+					)
+					local d = (Vector2.new(e.X, e.Y) - Vector2.new(
+						d.X,
+						d.Y + 36
+					)).magnitude
+					if d < a and f then
+						b = c
+						a = d
+					end
+				end
+			end
+			return b
+		end
+		function Lock:newDrawing(a, b)
+			local a = Drawing.new(a)
+			if b then
+				for b, c in next, b do
+					a[b] = c
+				end
+			end
+			return a
+		end
+		function Lock:newDrawing(a, b)
+			local a = Drawing.new(a)
+			if b then
+				for b, c in next, b do
+					a[b] = c
+				end
+			end
+			return a
+		end
+		function Lock:CalculateAbsolutePosition(a)
+			if Lock:GetPlayerStatus(a) then
+				local a = a.Character['HumanoidRootPart']
+				local b = a.Position
+				local c = tick()
+				Wait()
+				local a = a.Position
+				local d = tick()
+				local e = (a - b)
+				local f = d - c
+				local e = e / f
+				b = a
+				c = d
+				return e
+			end
+		end
+		function Lock:GetTool()
+			if
+				l.Character
+				and l.Character:FindFirstChildWhichIsA('Tool')
+				and Lock:GetPlayerStatus()
+			then
+				return l.Character:FindFirstChildWhichIsA('Tool')
+			end
+		end
+		function Lock:GetTracerOrigin(a)
+			if a == 'Head' then
+				return k:WorldToViewportPoint(l.Character.Head.Position)
+			elseif a == 'Gun' then
+				local a = Lock:GetTool()
+				if a and a.Handle ~= nil then
+					return k:WorldToViewportPoint(a.Handle.Position)
+				else
+					return nil
+				end
+			else
+				return Vector2.new(d.X, d.Y + 36)
+			end
+		end
+		Lock.Drawings.Tracer = Lock:newDrawing('Line', {
+			Visible = false,
+			Color = j(255, 255, 255),
+			Thickness = 1,
+			ZIndex = 2,
+			Transparency = 1,
+		})
+		Lock.Drawings.Dot = Lock:newDrawing('Circle', {
+			Filled = true,
+			Visible = false,
+			Color = j(255, 255, 255),
+			Thickness = 1,
+			ZIndex = 2,
+			Transparency = 1,
+			Radius = 10,
+		})
+		Lock.Drawings.FOV = Lock:newDrawing('Circle', {
+			Visible = false,
+			Color = j(255, 255, 255),
+			Thickness = 1,
+			ZIndex = 2,
+			Transparency = 1,
+			Radius = 2,
+		})
+		Lock.Drawings.FakeHitbox = Instance.new('Part')
+		Lock.Drawings.FakeHitbox.Anchored = false
+		Lock.Drawings.FakeHitbox.CanCollide = false
+		Lock.Drawings.FakeHitbox.CFrame = CFrame.new(9999, 9999, 9999)
+		Lock.Drawings.FakeHitbox.Parent = game.Workspace
+		Lock.Drawings.FakeHitbox.Material = Enum.Material.Neon
+		Lock.Drawings.FakeHitbox.Color = Color3.fromRGB(255, 255, 255)
+		Lock.Drawings.FakeHitbox.Transparency = 0.8
+		local d = Instance.new('Highlight')
+		c.RenderStepped:Connect(function()
+			if Lock.Locking and Lock.Visualize.Highlight then
+				d.Parent = Lock.Target.Player.Character
+				d.FillColor = getgenv().fillcolor
+				d.OutlineColor = getgenv().outlinecolor
+			else
+				d.Parent = game.CoreGui
+			end
+		end)
+		local c = {
+			targetui = Instance.new('ScreenGui'),
+			Frame = Instance.new('Frame'),
+			ImageLabel = Instance.new('ImageLabel'),
+			LocalScript = Instance.new('LocalScript'),
+			TextLabel = Instance.new('TextLabel'),
+			LocalScript_1 = Instance.new('LocalScript'),
+			Frame_1 = Instance.new('Frame'),
+			TextLabel_1 = Instance.new('TextLabel'),
+			LocalScript_2 = Instance.new('LocalScript'),
+			Frame_2 = Instance.new('Frame'),
+			TextLabel_2 = Instance.new('TextLabel'),
+			LocalScript_3 = Instance.new('LocalScript'),
+			UIGradient = Instance.new('UIGradient'),
+			Shadow = Instance.new('ImageLabel'),
+			Gradient = Instance.new('UIGradient'),
+		}
+		c.targetui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+		c.targetui.Name = 'targetui'
+		c.targetui.Parent = game:GetService('CoreGui')
+		c.Frame.BorderSizePixel = 0
+		c.Frame.Size = UDim2.new(0, 323, 0, 112)
+		c.Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		c.Frame.Name = 'Frame'
+		c.Frame.Position = UDim2.new(0.414371, 0, 0.854945, 0)
+		c.Frame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+		c.Frame.Parent = c.targetui
+		c.ImageLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+		c.ImageLabel.Image = 'rbxasset://textures/ui/GuiImagePlaceholder.png'
+		c.ImageLabel.Size = UDim2.new(0, 75, 0, 75)
+		c.ImageLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		c.ImageLabel.Name = 'ImageLabel'
+		c.ImageLabel.BackgroundTransparency = 1
+		c.ImageLabel.Position = UDim2.new(0.0400908, 0, 0.151078, 0)
+		c.ImageLabel.Parent = c.Frame
+		c.LocalScript.Name = 'LocalScript'
+		c.LocalScript.Parent = c.ImageLabel
+		c.TextLabel.TextStrokeTransparency = 0
+		c.TextLabel.BorderSizePixel = 0
+		c.TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+		c.TextLabel.Font = Enum.Font.Code
+		c.TextLabel.TextSize = 13
+		c.TextLabel.Position = UDim2.new(0.321981, 0, 0.3125, 0)
+		c.TextLabel.Size = UDim2.new(0, 200, 0, 23)
+		c.TextLabel.Name = 'TextLabel'
+		c.TextLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
+		c.TextLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		c.TextLabel.Text = '@nil'
+		c.TextLabel.BackgroundTransparency = 1
+		c.TextLabel.TextXAlignment = Enum.TextXAlignment.Left
+		c.TextLabel.Parent = c.Frame
+		c.LocalScript_1.Name = 'LocalScript'
+		c.LocalScript_1.Parent = c.TextLabel
+		c.Frame_1.BorderSizePixel = 0
+		c.Frame_1.Size = UDim2.new(0, 211, 0, 22)
+		c.Frame_1.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		c.Frame_1.Name = 'Frame'
+		c.Frame_1.Position = UDim2.new(0.321981, 0, 0.625, 0)
+		c.Frame_1.BackgroundColor3 = Color3.fromRGB(227, 181, 200)
+		c.Frame_1.Parent = c.Frame
+		c.TextLabel_1.TextStrokeTransparency = 0
+		c.TextLabel_1.BorderSizePixel = 0
+		c.TextLabel_1.BackgroundColor3 = Color3.fromRGB(227, 181, 200)
+		c.TextLabel_1.Font = Enum.Font.Code
+		c.TextLabel_1.TextSize = 14
+		c.TextLabel_1.Position = UDim2.new(0.0584566, 0, 0, 0)
+		c.TextLabel_1.Size = UDim2.new(0, 185, 0, 20)
+		c.TextLabel_1.Name = 'TextLabel'
+		c.TextLabel_1.TextColor3 = Color3.fromRGB(255, 255, 255)
+		c.TextLabel_1.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		c.TextLabel_1.Text = 'Health: nan'
+		c.TextLabel_1.BackgroundTransparency = 1
+		c.TextLabel_1.Parent = c.Frame_1
+		c.LocalScript_2.Name = 'LocalScript'
+		c.LocalScript_2.Parent = c.TextLabel_1
+		c.Frame_2.BorderSizePixel = 0
+		c.Frame_2.Size = UDim2.new(0, 323, 0, 2)
+		c.Frame_2.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		c.Frame_2.Name = 'Frame'
+		c.Frame_2.BackgroundColor3 = Color3.fromRGB(227, 181, 200)
+		c.Frame_2.Parent = c.Frame
+		c.TextLabel_2.TextStrokeTransparency = 0
+		c.TextLabel_2.BorderSizePixel = 0
+		c.TextLabel_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+		c.TextLabel_2.Font = Enum.Font.Code
+		c.TextLabel_2.TextSize = 18
+		c.TextLabel_2.Position = UDim2.new(0.321981, 0, 4.07144, 0)
+		c.TextLabel_2.Size = UDim2.new(0, 200, 0, 43)
+		c.TextLabel_2.Name = 'TextLabel'
+		c.TextLabel_2.TextColor3 = Color3.fromRGB(255, 255, 255)
+		c.TextLabel_2.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		c.TextLabel_2.Text = 'nil'
+		c.TextLabel_2.BackgroundTransparency = 1
+		c.TextLabel_2.TextXAlignment = Enum.TextXAlignment.Left
+		c.TextLabel_2.Parent = c.Frame_2
+		c.LocalScript_3.Name = 'LocalScript'
+		c.LocalScript_3.Parent = c.TextLabel_2
+		c.UIGradient.Name = 'UIGradient'
+		c.UIGradient.Color = ColorSequence.new({
+			ColorSequenceKeypoint.new(0, Color3.fromRGB(50, 50, 50)),
+			ColorSequenceKeypoint.new(1, Color3.fromRGB(170, 170, 170)),
+		})
+		c.UIGradient.Rotation = 270
+		c.UIGradient.Parent = c.Frame
+		c.Shadow.ImageColor3 = Color3.fromRGB(14, 14, 14)
+		c.Shadow.ZIndex = 0
+		c.Shadow.SliceCenter = Rect.new(18, 18, 20, 20)
+		c.Shadow.ScaleType = Enum.ScaleType.Slice
+		c.Shadow.AnchorPoint = Vector2.new(0.5, 0.5)
+		c.Shadow.Image = 'http://www.roblox.com/asset/?id=12194054034'
+		c.Shadow.Size = UDim2.new(1, 20, 1, 20)
+		c.Shadow.Name = 'Shadow'
+		c.Shadow.BackgroundTransparency = 1
+		c.Shadow.Position = UDim2.new(0.5, 0, 0.5, 0)
+		c.Shadow.Parent = c.Frame
+		c.Gradient.Name = 'Gradient'
+		c.Gradient.Rotation = 90
+		c.Gradient.Parent = c.Shadow
+		c.Frame.Visible = false
+		for a, a in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
+			if
+				a:IsA('Script')
+				and a.Name ~= 'Health'
+				and a.Name ~= 'Sound'
+				and a:FindFirstChild('LocalScript')
+			then
+				a:Destroy()
+			end
+		end
+		game.Players.LocalPlayer.CharacterAdded:Connect(function(a)
+			repeat
+				wait()
+			until game.Players.LocalPlayer.Character
+			a.ChildAdded:Connect(function(a)
+				if a:IsA('Script') then
+					wait(0.1)
+					if a:FindFirstChild('LocalScript') then
+						a.LocalScript:FireServer()
+					end
+				end
+			end)
+		end)
+		local d = game:GetService('Players')['LocalPlayer']
+		d['CharacterAdded']:connect(function(a)
+			repeat
+				wait()
+			until a and a:FindFirstChild('Humanoid')
+			for a, a in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
+				if
+					a:IsA('Script')
+					and a.Name ~= 'Health'
+					and a.Name ~= 'Sound'
+					and a:FindFirstChild('LocalScript')
+				then
+					a:Destroy()
+				end
+			end
+			game.Players.LocalPlayer.CharacterAdded:Connect(function(a)
+				repeat
+					wait()
+				until game.Players.LocalPlayer.Character
+				a.ChildAdded:Connect(function(a)
+					if a:IsA('Script') then
+						wait(0.1)
+						if a:FindFirstChild('LocalScript') then
+							a.LocalScript:FireServer()
+						end
+					end
+				end)
+			end)
+		end)
+		getgenv().AimPart = 'HumanoidRootPart'
+		getgenv().OldAimPart = 'HumanoidRootPart'
+		getgenv().AimlockKey = 'q'
+		getgenv().AimRadius = 5
+		getgenv().ThirdPerson = true
+		getgenv().FirstPerson = true
+		getgenv().TeamCheck = false
+		getgenv().PredictMovement = false
+		getgenv().PredictionVelocity = 7.22
+		getgenv().Smoothness = false
+		getgenv().SmoothnessAmount = 1
+		getgenv().EasingStyle = Enum.EasingStyle.Elastic
+		getgenv().Notifications = false
+		getgenv().AutoPrediction = false
+		getgenv().UnlockOnDeath = false
+		getgenv().Shake = false
+		getgenv().ShakePower = 0
+		local d, e, e, j =
+			game:GetService('Players'),
+			game:GetService('UserInputService'),
+			game:GetService('RunService'),
+			game:GetService('StarterGui')
+		local j, k, l, o, p, q, q =
+			d.LocalPlayer,
+			d.LocalPlayer:GetMouse(),
+			workspace.CurrentCamera,
+			CFrame.new,
+			Ray.new,
+			Vector3.new,
+			Vector2.new
+		local q, r, s = true, false, false
+		local t
+		local u
+		getgenv().WorldToViewportPoint = function(a)
+			return l:WorldToViewportPoint(a)
+		end
+		getgenv().WorldToScreenPoint = function(a)
+			return l.WorldToScreenPoint(l, a)
+		end
+		getgenv().GetObscuringObjects = function(a)
+			if
+				a
+				and a:FindFirstChild(getgenv().AimPart)
+				and j
+				and j.Character:FindFirstChild('Head')
+			then
+				local b = workspace:FindPartOnRay(
+					p(a[getgenv().AimPart].Position, j.Character.Head.Position)
+				)
+				if b then
+					return b:IsDescendantOf(a)
+				end
+			end
+		end
+		getgenv().GetNearestTarget = function()
+			local a = {}
+			local b = {}
+			local c = {}
+			for b, b in pairs(d:GetPlayers()) do
+				if b ~= j then
+					table.insert(a, b)
+				end
+			end
+			for a, d in pairs(a) do
+				if d.Character ~= nil then
+					local e = d.Character:FindFirstChild('Head')
+					if getgenv().TeamCheck == true and d.Team ~= j.Team then
+						local f = (
+							d.Character:FindFirstChild('Head').Position
+							- game.Workspace.CurrentCamera.CFrame.p
+						).magnitude
+						local g = Ray.new(
+							game.Workspace.CurrentCamera.CFrame.p,
+							(k.Hit.p - game.Workspace.CurrentCamera.CFrame.p).unit
+								* f
+						)
+						local g, g =
+							game.Workspace:FindPartOnRay(g, game.Workspace)
+						local e = math.floor((g - e.Position).magnitude)
+						b[d.Name .. a] = {}
+						b[d.Name .. a].dist = f
+						b[d.Name .. a].plr = d
+						b[d.Name .. a].diff = e
+						table.insert(c, e)
+					elseif
+						getgenv().TeamCheck == false and d.Team == j.Team
+					then
+						local f = (
+							d.Character:FindFirstChild('Head').Position
+							- game.Workspace.CurrentCamera.CFrame.p
+						).magnitude
+						local g = Ray.new(
+							game.Workspace.CurrentCamera.CFrame.p,
+							(k.Hit.p - game.Workspace.CurrentCamera.CFrame.p).unit
+								* f
+						)
+						local g, g =
+							game.Workspace:FindPartOnRay(g, game.Workspace)
+						local e = math.floor((g - e.Position).magnitude)
+						b[d.Name .. a] = {}
+						b[d.Name .. a].dist = f
+						b[d.Name .. a].plr = d
+						b[d.Name .. a].diff = e
+						table.insert(c, e)
+					end
+				end
+			end
+			if unpack(c) == nil then
+				return nil
+			end
+			local a = math.floor(math.min(unpack(c)))
+			if a > getgenv().AimRadius then
+				return nil
+			end
+			for b, b in pairs(b) do
+				if b.diff == a then
+					return b.plr
+				end
+			end
+			return nil
+		end
+		e.RenderStepped:Connect(function()
+			if
+				getgenv().ThirdPerson == true
+				and getgenv().FirstPerson == true
+			then
+				if
+					(l.Focus.p - l.CoordinateFrame.p).Magnitude > 1
+					or (l.Focus.p - l.CoordinateFrame.p).Magnitude <= 1
+				then
+					s = true
+				else
+					s = false
+				end
+			elseif
+				getgenv().ThirdPerson == true
+				and getgenv().FirstPerson == false
+			then
+				if (l.Focus.p - l.CoordinateFrame.p).Magnitude > 1 then
+					s = true
+				else
+					s = false
+				end
+			elseif
+				getgenv().ThirdPerson == false
+				and getgenv().FirstPerson == true
+			then
+				if (l.Focus.p - l.CoordinateFrame.p).Magnitude <= 1 then
+					s = true
+				else
+					s = false
+				end
+			end
+			if q == true and r == true then
+				if
+					t
+					and t.Character
+					and t.Character:FindFirstChild(getgenv().AimPart)
+				then
+					if getgenv().FirstPerson == true then
+						if s == true then
+							if getgenv().PredictMovement == true then
+								if getgenv().Smoothness == true then
+									local a = o(
+										l.CFrame.p,
+										t.Character[getgenv().AimPart].Position
+											+ t.Character[getgenv().AimPart].Velocity
+												/ PredictionVelocity
+									)
+									l.CFrame = l.CFrame:Lerp(
+										a,
+										getgenv().SmoothnessAmount,
+										getgenv().EasingStyle,
+										Enum.EasingDirection.InOut
+									)
+								else
+									l.CFrame = o(
+										l.CFrame.p,
+										t.Character[getgenv().AimPart].Position
+											+ t.Character[getgenv().AimPart].Velocity
+												/ PredictionVelocity
+									)
+								end
+							elseif getgenv().PredictMovement == false then
+								if getgenv().Smoothness == true then
+									local a = o(
+										l.CFrame.p,
+										t.Character[getgenv().AimPart].Position
+									)
+									l.CFrame = l.CFrame:Lerp(
+										a,
+										getgenv().SmoothnessAmount,
+										getgenv().EasingStyle,
+										Enum.EasingDirection.InOut
+									)
+								else
+									l.CFrame = o(
+										l.CFrame.p,
+										t.Character[getgenv().AimPart].Position
+									)
+								end
+							end
+						end
+					end
+				end
+			end
+			if
+				getgenv().UnlockOnDeath == true
+				and t
+				and t.Character:FindFirstChild('Humanoid')
+			then
+				if
+					t.StarterPlayer.StarterCharacterScripts.BodyEffects['K.O']
+				then
+					t = nil
+					if getgenv().Notifications == true then
+						Notify({
+							Title = Coolbrain,
+							Description = 'Unlocked',
+							Duration = 1,
+						})
+					end
+					if getgenv().ChatNotis == true then
+						game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(
+							'Unlocked',
+							'All'
+						)
+					end
+				end
+			end
+			if getgenv().Shake == true and t and t.Character then
+				local a = o(
+					l.CFrame.p,
+					t.Character[getgenv().AimPart].Position
+						+ t.Character[getgenv().AimPart].Velocity / PredictionVelocity
+						+ Vector3.new(
+								math.random(
+									-getgenv().ShakePower,
+									getgenv().ShakePower
+								),
+								math.random(
+									-getgenv().ShakePower,
+									getgenv().ShakePower
+								),
+								math.random(
+									-getgenv().ShakePower,
+									getgenv().ShakePower
+								)
+							)
+							* 0.1
+				)
+				l.CFrame = l.CFrame:Lerp(
+					a,
+					getgenv().SmoothnessAmount,
+					getgenv().EasingStyle,
+					Enum.EasingDirection.InOut
+				)
+			end
+			if getgenv().AutoPrediction == true then
+				pingvalue =
+					game:GetService('Stats').Network.ServerStatsItem['Data Ping']
+						:GetValueString()
+				split = string.split(pingvalue, '(')
+				ping = tonumber(split[1])
+				if ping < 30 then
+					getgenv().PredictionVelocity = 7.758
+				elseif ping < 40 then
+					getgenv().PredictionVelocity = 7.364
+				elseif ping < 50 then
+					getgenv().PredictionVelocity = 7.456
+				elseif ping < 60 then
+					getgenv().PredictionVelocity = 7.217
+				elseif ping < 70 then
+					getgenv().PredictionVelocity = 6.972
+				elseif ping < 80 then
+					getgenv().PredictionVelocity = 6.782
+				elseif ping < 90 then
+					getgenv().PredictionVelocity = 6.597
+				elseif ping < 100 then
+					getgenv().PredictionVelocity = 3.88
+				elseif ping < 110 then
+					getgenv().PredictionVelocity = 6.099
+				end
+			end
+		end)
+		local d =
+			'https://raw.githubusercontent.com/wally-rblx/LinoriaLib/main/'
+		local d =
+			loadstring(game:HttpGet('https://pastebin.com/raw/7Tk5QM6R'))()
+		local e =
+			loadstring(game:HttpGet('https://pastebin.com/raw/WxMCy9be'))()
+		local j =
+			loadstring(game:HttpGet('https://pastebin.com/raw/rNY1ZdQT'))()
+		local k = d:CreateWindow({
+			Title = 'Coolbrain.lol | Private Build',
+			Center = true,
+			AutoShow = true,
+			Size = UDim2.fromOffset(550, 560),
+			TabPadding = 4,
+		})
+		local k = {
+			Main = k:AddTab('Legit'),
+			Rage = k:AddTab('Rage'),
+			Visuals = k:AddTab('Visuals'),
+			Misc = k:AddTab('Misc'),
+			['Settings'] = k:AddTab('Settings'),
+		}
+		local o = k.Main:AddLeftGroupbox('Camlock')
+		local p = k.Main:AddLeftGroupbox('Shake')
+		local s = k.Main:AddLeftGroupbox('Smoothing')
+		local u = k.Main:AddRightGroupbox('Silent Aim')
+		local v = k.Main:AddRightGroupbox('FOV')
+		o:AddToggle(
+			'Aimlock',
+			{ Text = 'Enable', Default = false, Tooltip = 'Enables Aimlock' }
+		)
+		Toggles.Aimlock:OnChanged(function()
+			getgenv().AimlockEnabled = Toggles.Aimlock.Value
+		end)
+		Toggles.Aimlock:AddKeyPicker('AimlockBind', {
+			Default = 'None',
+			SyncToggleState = false,
+			Mode = 'Toggle',
+			Text = 'Enable',
+			NoUI = false,
+		})
+		Options.AimlockBind:OnClick(function()
+			if AimlockEnabled then
+				Target = not Target
+				if t then
+					t = nil
+					r = false
+					if getgenv().Notifications then
+						Notifications('Unlocked')
+					end
+				else
+					if t == nil then
+						local a
+						a = GetNearestTarget()
+						if a ~= nil then
+							t = a
+							if getgenv().Notifications then
+								b:BuildNotificationUI()
+								Notifications('Locked Onto' .. tostring(q))
+							end
+							r = true
+						end
+					end
+				end
+			end
+		end)
+		o:AddInput('CamPrediction', {
+			Default = '7.22',
+			Numeric = true,
+			Finished = false,
+			Text = 'Prediction',
+			Tooltip = 'Example: 7.22',
+			Placeholder = '...',
+			Callback = function(a)
+				getgenv().PredictionVelocity = a
+				b:BuildNotificationUI()
+				Notifications('Prediction Changed To: ' .. tostring(a))
+			end,
+		})
+		o:AddToggle('CamPingBased', {
+			Text = 'Ping Based',
+			Default = false,
+			Tooltip = 'Autos Configures Prediction',
+		})
+		Toggles.CamPingBased:OnChanged(function()
+			getgenv().AutoPrediction = Toggles.CamPingBased.Value
+		end)
+		o:AddDropdown('CamHitpart', {
+			Values = { 'HumanoidRootPart', 'UpperTorso', 'LowerTorso', 'Head' },
+			Default = 1,
+			Multi = false,
+			Text = 'Hitpart',
+			Tooltip = 'Where your bullets will hit',
+		})
+		Options.CamHitpart:OnChanged(function()
+			getgenv().AimPart = Options.CamHitpart.Value
+		end)
+		o:AddToggle('CamAlerts', {
+			Text = 'Notifications',
+			Default = false,
+			Tooltip = 'Notifys Locking/Unlocking',
+		})
+		Toggles.CamAlerts:OnChanged(function()
+			getgenv().Notifications = Toggles.CamAlerts.Value
+		end)
+		o:AddToggle('CamUnOnD', {
+			Text = 'Unlock On Death',
+			Default = false,
+			Tooltip = 'Automatically Unlocks Target On KO',
+		})
+		Toggles.CamUnOnD:OnChanged(function()
+			getgenv().UnlockOnDeath = Toggles.CamUnOnD.Value
+		end)
+		p:AddToggle(
+			'CamShake',
+			{
+				Text = 'Shake',
+				Default = false,
+				Tooltip = 'Shakes On The Target',
+			}
+		)
+		Toggles.CamShake:OnChanged(function()
+			getgenv().Shake = Toggles.CamShake.Value
+		end)
+		p:AddInput('CamShakePower', {
+			Default = '5',
+			Numeric = true,
+			Finished = false,
+			Text = 'Shake Power',
+			Tooltip = 'Ex: 5',
+			Placeholder = '...',
+			Callback = function(a)
+				getgenv().ShakePower = a
+				b:BuildNotificationUI()
+				Notifications('Shake Power Changed To: ' .. tostring(a))
+			end,
+		})
+		s:AddToggle(
+			'CamSmoothness',
+			{
+				Text = 'Smoothness',
+				Default = false,
+				Tooltip = 'Smoothens Camlock',
+			}
+		)
+		Toggles.CamSmoothness:OnChanged(function()
+			getgenv().Smoothness = Toggles.CamSmoothness.Value
+		end)
+		s:AddInput('CamSmoothnessPWR', {
+			Default = '1',
+			Numeric = true,
+			Finished = false,
+			Text = 'Smoothness Power',
+			Tooltip = 'Ex: 0.52',
+			Placeholder = '...',
+			Callback = function(a)
+				getgenv().SmoothnessAmount = a
+				b:BuildNotificationUI()
+				Notifications('Smoothness Power Changed To: ' .. tostring(a))
+			end,
+			0.01,
+		})
+		getgenv().SilentAim = true
+		getgenv().AimLock = false
+		getgenv().Prediction = 0.13544
+		getgenv().AimLockKeybind = Enum.KeyCode.E
+		local o =
+			loadstring(game:HttpGet('https://pastebin.com/raw/KzV8GRHk'))()
+		o.TeamCheck(false)
+		o.ShowFOV = false
+		local p = game:GetService('Workspace')
+		local q = game:GetService('Players')
+		local r = game:GetService('RunService')
+		local s = game:GetService('UserInputService')
+		local t = q.LocalPlayer
+		local w = t:GetMouse()
+		local p = p.CurrentCamera
+		local x = {
+			SilentAim = getgenv().SilentAim,
+			AimLock = getgenv().AimLock,
+			Prediction = getgenv().Prediction,
+			AimLockKeybind = Enum.KeyCode.E,
+		}
+		getgenv().DaHoodSettings = x
+		function o.Check()
+			if
+				not (
+					o.Enabled == true
+					and o.Selected ~= t
+					and o.SelectedPart ~= nil
+				)
+			then
+				return false
+			end
+			local a = o.Character(o.Selected)
+			local b = a:WaitForChild('BodyEffects')['K.O'].Value
+			local a = a:FindFirstChild('GRABBING_CONSTRAINT') ~= nil
+			if b or a then
+				return false
+			end
+			return true
+		end
+		local y
+		y = hookmetamethod(game, '__index', function(a, b)
+			if
+				a:IsA('Mouse')
+				and (b == 'Hit' or b == 'Target')
+				and o.Check()
+			then
+				local a = o.SelectedPart
+				if x.SilentAim and (b == 'Hit' or b == 'Target') then
+					local c = a.CFrame + (a.Velocity * x.Prediction)
+					return (b == 'Hit' and c or a)
+				end
+			end
+			return y(a, b)
+		end)
+		r:BindToRenderStep('AimLock', 0, function()
+			if x.AimLock and o.Check() and s:IsKeyDown(x.AimLockKeybind) then
+				local a = o.SelectedPart
+				local a = a.CFrame + (a.Velocity * x.Prediction)
+				p.CFrame = CFrame.lookAt(p.CFrame.Position, a.Position)
+			end
+		end)
+		u:AddToggle(
+			'SilentAimt',
+			{ Text = 'Enable', Default = false, Tooltip = 'Enables Silent Aim' }
+		)
+		Toggles.SilentAimt:OnChanged(function() end)
+		u:AddInput('Prediction', {
+			Default = '0.13544',
+			Numeric = true,
+			Finished = false,
+			Text = 'Prediction',
+			Tooltip = 'Example: 0.13544',
+			Placeholder = '...',
+			Callback = function(a)
+				getgenv().Prediction = a
+			end,
+		})
+		u:AddToggle('SAPingBased', {
+			Text = 'Ping Based',
+			Default = false,
+			Tooltip = 'Autos Configures Prediction',
+		})
+		Toggles.SAPingBased:OnChanged(function()
+			getgenv().saPingBased = Toggles.SAPingBased.Value
+		end)
+		u:AddSlider('saHitchance', {
+			Text = 'Hitchance',
+			Default = 100,
+			Min = 0,
+			Max = 300,
+			Rounding = 1,
+			Compact = true,
+		})
+		Options.saHitchance:OnChanged(function()
+			o.Hitchance = Options.saHitchance.Value
+		end)
+		u:AddDropdown('SilentHitpart', {
+			Values = { 'HumanoidRootPart', 'UpperTorso', 'LowerTorso', 'Head' },
+			Default = 1,
+			Multi = false,
+			Text = 'Aimpart',
+			Tooltip = 'Where Your Bullets Hit',
+		})
+		Options.SilentHitpart:OnChanged(function()
+			o.TargetPart = Options.SilentHitpart.Value
+		end)
+		u:AddToggle('saToggleNoti', {
+			Text = 'Silent Aim Toggle',
+			Default = false,
+			Tooltip = 'Toggles The Silent Aim',
+		})
+		Toggles.saToggleNoti:OnChanged(function()
+			getgenv().saToggleNoti = Toggles.saToggleNoti.Value
+		end)
+		u:AddToggle('saToggleNoti', {
+			Text = 'Toggle Notifications',
+			Default = false,
+			Tooltip = 'Notifiys On Toggle',
+		})
+		Toggles.saToggleNoti:OnChanged(function()
+			getgenv().ToggleSilent = Toggles.saToggleNoti.Value
+		end)
+		Toggles.saToggleNoti:AddKeyPicker('saToggleBind', {
+			Default = 'None',
+			SyncToggleState = false,
+			Mode = 'Toggle',
+			Text = 'Enable',
+			NoUI = false,
+		})
+		Options.saToggleBind:OnClick(function()
+			if ToggleSilent then
+				if o.Enabled == true then
+					o.Enabled = false
+					if saToggleNoti then
+						Notifications('Silent Aim Enabled')
+					end
+				else
+					o.Enabled = true
+					if saToggleNoti then
+						Notifications('Silent Aim Disabled')
+					end
+				end
+			end
+		end)
+		v:AddToggle('FOVEnabled', {
+			Text = 'Enable',
+			Default = false,
+			Tooltip = 'Adds A Circle To Your Screen (fov = radius)',
+		})
+		Toggles.FOVEnabled:OnChanged(function()
+			o.ShowFOV = Toggles.FOVEnabled.Value
+		end)
+		v:AddToggle(
+			'FOVFilled',
+			{ Text = 'Filled', Default = false, Tooltip = 'Fills the FOV' }
+		)
+		Toggles.FOVFilled:OnChanged(function()
+			o.Filled = Toggles.FOVFilled.Value
+		end)
+		Toggles.FOVEnabled:AddColorPicker(
+			'FOVColor',
+			{ Default = Color3.fromRGB(255, 255, 255), Title = 'Color' }
+		)
+		Options.FOVColor:OnChanged(function()
+			o.FOVColour = Options.FOVColor.Value
+		end)
+		v:AddDivider()
+		v:AddSlider(
+			'FOVRadius',
+			{
+				Text = 'Size',
+				Default = 100,
+				Min = 3,
+				Max = 250,
+				Rounding = 1,
+				Compact = true,
+			}
+		)
+		Options.FOVRadius:OnChanged(function()
+			o.FOV = Options.FOVRadius.Value
+		end)
+		v:AddSlider(
+			'FOVSides',
+			{
+				Text = 'Sides',
+				Default = 100,
+				Min = 3,
+				Max = 250,
+				Rounding = 1,
+				Compact = true,
+			}
+		)
+		Options.FOVSides:OnChanged(function()
+			o.FOVSides = Options.FOVSides.Value
+		end)
+		v:AddDivider()
+		v:AddSlider('FOVTransparency', {
+			Text = 'Transparency',
+			Default = 1,
+			Min = 0.1,
+			Max = 1,
+			Rounding = 1,
+			Compact = true,
+		})
+		Options.FOVTransparency:OnChanged(function()
+			o.Transparency = Options.FOVTransparency.Value
+		end)
+		v:AddSlider(
+			'FOVThickness',
+			{
+				Text = 'Thickness',
+				Default = 2,
+				Min = 1,
+				Max = 10,
+				Rounding = 1,
+				Compact = true,
+			}
+		)
+		Options.FOVThickness:OnChanged(function()
+			o.Thickness = Options.FOVThickness.Value
+		end)
+		local o = k.Rage:AddLeftGroupbox('Target Aim')
+		local p = k.Rage:AddLeftGroupbox('Target Strafe')
+		o:AddToggle(
+			'TargetAim',
+			{ Text = 'Enable', Default = false, Tooltip = 'Enables Aimlock' }
+		)
+		Toggles.TargetAim:OnChanged(function()
+			Lock.Enabled = Toggles.TargetAim.Value
+		end)
+		Toggles.TargetAim:AddKeyPicker('TargetBind', {
+			Default = 'None',
+			SyncToggleState = false,
+			Mode = 'Toggle',
+			Text = 'Target Aim',
+			NoUI = false,
+		})
+		o:AddDropdown('TargetMode', {
+			Values = { 'Target Aim', 'Silent Aim' },
+			Default = 1,
+			Multi = false,
+			Text = 'Mode',
+			Tooltip = 'Target Aim Mode',
+		})
+		Options.TargetMode:OnChanged(function()
+			Lock.Mode = Options.TargetMode.Value
+		end)
+		o:AddToggle('TargetResolver', {
+			Text = 'Resolver',
+			Default = false,
+			Tooltip = 'Disables Anti Locks/Anti Aims',
+		})
+		Toggles.TargetResolver:OnChanged(function()
+			Lock.Resolver = Toggles.TargetResolver.Value
+		end)
+		o:AddInput('MyTextbox', {
+			Default = '0.09',
+			Numeric = true,
+			Finished = false,
+			Text = 'Prediction',
+			Tooltip = 'Prediction',
+			Placeholder = '0.09',
+			Callback = function(a)
+				Lock.Target.Prediction = a
+				b:BuildNotificationUI()
+				Notifications('Prediction Changed To: ' .. tostring(a))
+			end,
+		})
+		o:AddSlider(
+			'TargetRadius',
+			{
+				Text = 'Radius',
+				Default = 50,
+				Min = 5,
+				Max = 200,
+				Rounding = 2,
+				Compact = true,
+			}
+		)
+		Options.TargetRadius:OnChanged(function()
+			Lock.Drawings.FOV.Radius = Options.TargetRadius.Value
+		end)
+		o:AddToggle('TargetNotis', {
+			Text = 'Notifications',
+			Default = false,
+			Tooltip = 'Notifys On Enabled/Disabled',
+		})
+		Toggles.TargetNotis:OnChanged(function()
+			Lock.Visualize.Notify = Toggles.TargetNotis.Value
+		end)
+		o:AddToggle(
+			'TargetPingBased',
+			{
+				Text = 'Ping Based',
+				Default = false,
+				Tooltip = 'Auto Configs Prediction',
+			}
+		)
+		Toggles.TargetPingBased:OnChanged(function()
+			Lock.Prediction.PingBased = Toggles.TargetPingBased.Value
+		end)
+		o:AddToggle(
+			'TargetAirPred',
+			{
+				Text = 'Air Prediction',
+				Default = false,
+				Tooltip = 'Predicts Airshots',
+			}
+		)
+		Toggles.TargetAirPred:OnChanged(function()
+			Lock.Prediction.Air = Toggles.TargetAirPred.Value
+		end)
+		o:AddDropdown('TargetAimpart', {
+			Values = { 'HumanoidRootPart', 'UpperTorso', 'LowerTorso', 'Head' },
+			Default = 1,
+			Multi = false,
+			Text = 'Aimpart',
+			Tooltip = 'Where Your Bullets Hit',
+		})
+		Options.TargetAimpart:OnChanged(function()
+			Lock.Prediction.Part = Options.TargetAimpart.Value
+		end)
+		o:AddToggle(
+			'TargetLookAt',
+			{
+				Text = 'Look At',
+				Default = false,
+				Tooltip = 'Looks At Your Target',
+			}
+		)
+		Toggles.TargetLookAt:OnChanged(function()
+			Lock.LookAt = Toggles.TargetLookAt.Value
+		end)
+		o:AddToggle(
+			'TargetViewAt',
+			{ Text = 'View At', Default = false, Tooltip = 'Views Your Target' }
+		)
+		Toggles.TargetViewAt:OnChanged(function()
+			Lock.ViewAt = Toggles.TargetViewAt.Value
+		end)
+		o:AddSlider('TargetOffset', {
+			Text = 'Offset',
+			Default = 0.06,
+			Min = -0.5,
+			Max = 0.5,
+			Rounding = 2,
+			Compact = true,
+		})
+		Options.TargetOffset:OnChanged(function()
+			getgenv().offset = Options.TargetOffset.Value
+		end)
+		p:AddToggle('TargetStrafe', {
+			Text = 'Target Strafe',
+			Default = false,
+			Tooltip = 'Strafes Around Your Target',
+		})
+		Toggles.TargetStrafe:OnChanged(function()
+			Lock.Target_Strafe[1] = Toggles.TargetStrafe.Value
+		end)
+		p:AddToggle('StrafeRotation', {
+			Text = 'Visualize Rotation',
+			Default = false,
+			Tooltip = 'Visualizes Strafe Rotation',
+		})
+		Toggles.StrafeRotation:OnChanged(function()
+			Lock.Visualize.Strafe = Toggles.StrafeRotation.Value
+		end)
+		Toggles.StrafeRotation:AddColorPicker('VisualizeRotationColor', {
+			Default = Color3.new(0, 1, 0),
+			Title = 'Visualize Rotation',
+			Transparency = 1,
+		})
+		p:AddSlider(
+			'StrafeSpeed',
+			{
+				Text = 'Speed',
+				Default = 5,
+				Min = 1,
+				Max = 20,
+				Rounding = 1,
+				Compact = true,
+			}
+		)
+		Options.StrafeSpeed:OnChanged(function()
+			Lock.Target_Strafe[2] = Options.StrafeSpeed.Value
+		end)
+		p:AddSlider(
+			'StrafeRadius',
+			{
+				Text = 'Radius',
+				Default = 5,
+				Min = 1,
+				Max = 20,
+				Rounding = 1,
+				Compact = true,
+			}
+		)
+		Options.StrafeRadius:OnChanged(function()
+			Lock.Target_Strafe[3] = Options.StrafeRadius.Value
+		end)
+		p:AddSlider(
+			'StrafeHeight',
+			{
+				Text = 'Height',
+				Default = 5,
+				Min = 0,
+				Max = 20,
+				Rounding = 1,
+				Compact = true,
+			}
+		)
+		Options.StrafeHeight:OnChanged(function()
+			Lock.Target_Strafe[4] = Options.StrafeHeight.Value
+		end)
+		local o = k.Misc:AddLeftGroupbox('Player')
+		local p = k.Misc:AddLeftGroupbox('AutoBuy')
+		o:AddToggle(
+			'CFrame',
+			{ Text = 'Enable', Default = false, Tooltip = 'Enable CFrame' }
+		)
+		getgenv().cfrene = false
+		Toggles.CFrame:OnChanged(function()
+			getgenv().cframe = Toggles.CFrame.Value
+		end)
+		Toggles.CFrame:AddKeyPicker('CFrameBind', {
+			Default = 'None',
+			SyncToggleState = false,
+			Mode = 'Toggle',
+			Text = 'CFrame',
+			NoUI = false,
+		})
+		Options.CFrameBind:OnClick(function()
+			if getgenv().cframe then
+				getgenv().cfrene = not getgenv().cfrene
+				if getgenv().cfrene == true then
+					repeat
+						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+							+ game.Players.LocalPlayer.Character.Humanoid.MoveDirection
+								* Multiplier
+						game:GetService('RunService').Stepped:wait()
+					until getgenv().cfrene == false
+				end
+			end
+		end)
+		o:AddSlider('CFrameSpeed', {
+			Text = 'CFrame Speed Amount',
+			Default = 1,
+			Min = 0.5,
+			Max = 5,
+			Rounding = 2,
+			Compact = false,
+		})
+		Options.CFrameSpeed:OnChanged(function()
+			getgenv().Multiplier = Options.CFrameSpeed.Value
+		end)
+		local s = game:GetService('VirtualInputManager')
+		local u = game:GetService('UserInputService')
+		o:AddToggle(
+			'Macro',
+			{ Text = 'Macro', Default = false, Tooltip = 'Enable Macro' }
+		)
+		getgenv().macro = false
+		Toggles.Macro:OnChanged(function()
+			getgenv().macro = Toggles.Macro.Value
+		end)
+		Toggles.Macro:AddKeyPicker('MacroBind', {
+			Default = 'None',
+			SyncToggleState = false,
+			Mode = 'Toggle',
+			Text = 'Macro',
+			NoUI = false,
+		})
+		Options.MacroBind:OnClick(function()
+			if getgenv().macro then
+				getgenv().mawco = not getgenv().mawco
+				if getgenv().mawco == true then
+					repeat
+						s:SendKeyEvent(true, 'I', false, game)
+						wait()
+						s:SendKeyEvent(true, 'O', false, game)
+						wait()
+						s:SendKeyEvent(true, 'I', false, game)
+						wait()
+						s:SendKeyEvent(true, 'O', false, game)
+						wait()
+						s:SendKeyEvent(true, 'I', false, game)
+						wait()
+						s:SendKeyEvent(true, 'O', false, game)
+						wait()
+						s:SendKeyEvent(true, 'I', false, game)
+						wait()
+						s:SendKeyEvent(true, 'O', false, game)
+						wait()
+						s:SendKeyEvent(true, 'I', false, game)
+						wait()
+						s:SendKeyEvent(true, 'O', false, game)
+						wait()
+						s:SendKeyEvent(true, 'I', false, game)
+						wait()
+						s:SendKeyEvent(true, 'O', false, game)
+						wait()
+						s:SendKeyEvent(true, 'I', false, game)
+						wait()
+						s:SendKeyEvent(true, 'O', false, game)
+						wait()
+						s:SendKeyEvent(true, 'I', false, game)
+						wait()
+						s:SendKeyEvent(true, 'O', false, game)
+						wait()
+						s:SendKeyEvent(true, 'I', false, game)
+						wait()
+						s:SendKeyEvent(true, 'O', false, game)
+						wait()
+						s:SendKeyEvent(true, 'I', false, game)
+						wait()
+						s:SendKeyEvent(true, 'O', false, game)
+						wait()
+					until getgenv().mawco == false
+				end
+			end
+		end)
+		o:AddToggle(
+			'AutoClick',
+			{ Text = 'Auto Click', Default = false, Tooltip = 'Enable Macro' }
+		)
+		getgenv().macro = false
+		Toggles.AutoClick:OnChanged(function()
+			getgenv().click = Toggles.AutoClick.Value
+		end)
+		Toggles.AutoClick:AddKeyPicker('AutoClickBind', {
+			Default = 'None',
+			SyncToggleState = false,
+			Mode = 'Toggle',
+			Text = 'Auto Click',
+			NoUI = false,
+		})
+		getgenv().clickintervaral = 0
+		Options.AutoClickBind:OnClick(function()
+			if getgenv().click then
+				getgenv().click2 = not getgenv().click2
+				if getgenv().click2 == true then
+					repeat
+						mouse1click()
+						wait(getgenv().clickintervaral)
+					until getgenv().click2 == false
+				end
+			end
+		end)
+		o:AddSlider('ClickWait', {
+			Text = 'Autoclick Interveral',
+			Default = 0.1,
+			Min = 0.,
+			Max = 0.3,
+			Rounding = 6,
+			Compact = false,
+		})
+		Options.ClickWait:OnChanged(function()
+			getgenv().clickintervaral = Options.ClickWait.Value
+		end)
+		p:AddDropdown('BuyGuns', {
+			Values = {
+				'[Revolver]',
+				'[Double Barrel SG]',
+				'[Tactical Shotgun]',
+				'[SMG]',
+				'[Knife]',
+				'[Shotgun]',
+				'[Flame Thrower]',
+				'[RPG]',
+				'[AK-47]',
+			},
+			Default = 20,
+			Multi = false,
+			Text = 'Weapons',
+			Tooltip = 'Auto Buy Weapons',
+		})
+		Options.BuyGuns:OnChanged(function()
+			if Options.BuyGuns.Value == '[Revolver]' then
+				local a = game.Workspace.Ignored.Shop['[Revolver] - $1339']
+				local b =
+					game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = a.Head.CFrame
+					+ Vector3.new(0, 3, 0)
+				if
+					(
+						game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+						- a.Head.Position
+					).Magnitude <= 50
+				then
+					wait(0.2)
+					fireclickdetector(a:FindFirstChild('ClickDetector'), 4)
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame =
+						CFrame.new(b)
+				end
+			end
+			if Options.BuyGuns.Value == '[Double Barrel SG]' then
+				local a =
+					game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+				local b =
+					game.Workspace.Ignored.Shop['[Double-Barrel SG] - $1442']
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = b.Head.CFrame
+					+ Vector3.new(0, 3, 0)
+				if
+					(
+						game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+						- b.Head.Position
+					).Magnitude <= 50
+				then
+					wait(0.2)
+					fireclickdetector(b:FindFirstChild('ClickDetector'), 4)
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame =
+						CFrame.new(a)
+				end
+			end
+			if Options.BuyGuns.Value == '[Shotgun]' then
+				local a = game.Workspace.Ignored.Shop['[Shotgun] - $1288']
+				local b =
+					game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = a.Head.CFrame
+					+ Vector3.new(0, 3, 0)
+				if
+					(
+						game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+						- a.Head.Position
+					).Magnitude <= 50
+				then
+					wait(0.2)
+					fireclickdetector(a:FindFirstChild('ClickDetector'), 4)
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame =
+						CFrame.new(b)
+				end
+			end
+			if Options.BuyGuns.Value == '[Tactical Shotgun]' then
+				local a =
+					game.Workspace.Ignored.Shop['[TacticalShotgun] - $1751']
+				local b =
+					game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = a.Head.CFrame
+					+ Vector3.new(0, 3, 0)
+				if
+					(
+						game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+						- a.Head.Position
+					).Magnitude <= 50
+				then
+					wait(0.2)
+					fireclickdetector(a:FindFirstChild('ClickDetector'), 4)
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame =
+						CFrame.new(b)
+				end
+			end
+			if Options.BuyGuns.Value == '[SMG]' then
+				local a = game.Workspace.Ignored.Shop['[SMG] - $773']
+				local b =
+					game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = a.Head.CFrame
+					+ Vector3.new(0, 3, 0)
+				if
+					(
+						game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+						- a.Head.Position
+					).Magnitude <= 50
+				then
+					wait(0.2)
+					fireclickdetector(a:FindFirstChild('ClickDetector'), 4)
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame =
+						CFrame.new(b)
+				end
+			end
+			if Options.BuyGuns.Value == '[Knife]' then
+				local a = game.Workspace.Ignored.Shop['[Knife] - $155']
+				local b =
+					game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = a.Head.CFrame
+					+ Vector3.new(0, 3, 0)
+				if
+					(
+						game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+						- a.Head.Position
+					).Magnitude <= 50
+				then
+					wait(0.2)
+					fireclickdetector(a:FindFirstChild('ClickDetector'), 4)
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame =
+						CFrame.new(b)
+				end
+			end
+			if Options.BuyGuns.Value == '[RPG]' then
+				local a = game.Workspace.Ignored.Shop['[RPG] - $6180']
+				local b =
+					game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = a.Head.CFrame
+					+ Vector3.new(0, 3, 0)
+				if
+					(
+						game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+						- a.Head.Position
+					).Magnitude <= 50
+				then
+					wait(0.2)
+					fireclickdetector(a:FindFirstChild('ClickDetector'), 4)
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame =
+						CFrame.new(b)
+				end
+			end
+			if Options.BuyGuns.Value == '[AK-47]' then
+				local a = game.Workspace.Ignored.Shop['[AK47] - $2318']
+				local b =
+					game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = a.Head.CFrame
+					+ Vector3.new(0, 3, 0)
+				if
+					(
+						game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+						- a.Head.Position
+					).Magnitude <= 50
+				then
+					wait(0.2)
+					fireclickdetector(a:FindFirstChild('ClickDetector'), 4)
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame =
+						CFrame.new(b)
+				end
+			end
+			if Options.BuyGuns.Value == '[Flame Thrower]' then
+				local a = game.Workspace.Ignored.Shop['[Flamethrower] - $25750']
+				local b =
+					game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = a.Head.CFrame
+					+ Vector3.new(0, 3, 0)
+				if
+					(
+						game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+						- a.Head.Position
+					).Magnitude <= 50
+				then
+					wait(0.2)
+					fireclickdetector(a:FindFirstChild('ClickDetector'), 4)
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame =
+						CFrame.new(b)
+				end
+			end
+		end)
+		p:AddDropdown('BuyAmmo', {
+			Values = {
+				'[Taco]',
+				'[Hamburger]',
+				'[Pizza]',
+				'[Popcorn]',
+				'[Cranberry]',
+				'[Chicken]',
+				'[Donut]',
+				'',
+			},
+			Default = 20,
+			Multi = false,
+			Text = 'Weapons',
+			Tooltip = 'Auto Buy Weapons',
+		})
+		Options.BuyAmmo:OnChanged(function() end)
+		local o = k.Visuals:AddLeftGroupbox('ESP')
+		local o = k.Visuals:AddLeftGroupbox('World')
+		local p = k.Visuals:AddRightGroupbox('Target Aim')
+		local s = k.Visuals:AddRightTabbox()
+		o:AddLabel('Fog Color'):AddColorPicker('FogColorR', {
+			Default = Color3.fromRGB(100, 87, 72),
+			Title = 'Fog Color',
+			Transparency = nil,
+			Callback = function(a) end,
+		})
+		Options.FogColorR:OnChanged(function()
+			game:GetService('Lighting').FogColor = Options.FogColorR.Value
+		end)
+		o:AddSlider('FogEnd', {
+			Text = 'Fog Distance',
+			Default = 800,
+			Min = 25,
+			Max = 5000,
+			Rounding = 1,
+			Compact = true,
+		})
+		Options.FogEnd:OnChanged(function()
+			game:GetService('Lighting').FogEnd = Options.FogEnd.Value
+		end)
+		local o = s:AddTab('Player')
+		o:AddToggle(
+			'BodyCham',
+			{ Text = 'Body Cham', Default = false, Tooltip = 'Chams Your Body' }
+		)
+		Toggles.BodyCham:OnChanged(function()
+			p:AddToggle('TargetHitbox', {
+				Text = 'Fake Hitbox',
+				Default = false,
+				Tooltip = 'Adds A Fake Hitbox On Your Target',
+			})
+			Toggles.TargetHitbox:OnChanged(function()
+				Lock.Visualize.Hitbox = Toggles.TargetHitbox.Value
+			end)
+		end)
+		Toggles.TargetHitbox:AddColorPicker(
+			'TargetHitboxColor',
+			{
+				Default = Color3.new(0, 1, 0),
+				Title = 'Hitbox Color',
+				Transparency = 1,
+			}
+		)
+		Options.TargetHitboxColor:OnChanged(function()
+			Lock.Drawings.FakeHitbox.Color = Options.TargetHitboxColor.Value
+			Lock.Drawings.FakeHitbox.Transparency =
+				Options.TargetHitboxColor.Transparency
+		end)
+		p:AddDropdown('BodyChamMaterial', {
+			Values = { 'ForceField', 'Neon', 'Glass' },
+			Default = 1,
+			Multi = false,
+			Text = 'Cham Material',
+			Tooltip = 'Customize The Cham Material',
+		})
+		Options.BodyChamMaterial:OnChanged(function() end)
+		Lock.Drawings.FakeHitbox.CFrame = CFrame.new(9999, 9999, 9999)
+		p:AddSlider(
+			'HitboxSize',
+			{
+				Text = 'Hitbox Size',
+				Default = 4,
+				Min = 1,
+				Max = 15,
+				Rounding = 1,
+				Compact = true,
+			}
+		)
+		Options.HitboxSize:OnChanged(function()
+			Lock.Visualize.X = Options.HitboxSize.Value
+			Lock.Visualize.Y = Options.HitboxSize.Value
+			Lock.Visualize.Z = Options.HitboxSize.Value
+		end)
+		p:AddDropdown('TargetMaterial', {
+			Values = { 'Neon', 'Plastic', 'ForceField', 'Glass' },
+			Default = 3,
+			Multi = false,
+			Text = 'Material',
+			Tooltip = 'Hitbox Material',
+		})
+		Options.TargetMaterial:OnChanged(function()
+			Lock.Drawings.FakeHitbox.Material =
+				Enum.Material[Options.TargetMaterial.Value]
+		end)
+		p:AddToggle('VisualHighlight', {
+			Text = 'Highlight',
+			Default = false,
+			Tooltip = 'Adds A Dot To The Targets Aimpart',
+		})
+		Toggles.VisualHighlight:OnChanged(function()
+			Lock.Visualize.Highlight = Toggles.VisualHighlight.Value
+		end)
+		Toggles.VisualHighlight:AddColorPicker(
+			'HighlightFill',
+			{
+				Default = Color3.fromRGB(255, 0, 255),
+				Title = 'Highlight Fill Color',
+			}
+		)
+		Options.HighlightFill:OnChanged(function()
+			getgenv().fillcolor = Options.HighlightFill.Value
+		end)
+		Toggles.VisualHighlight:AddColorPicker('HighlightOutline', {
+			Default = Color3.fromRGB(255, 255, 255),
+			Title = 'Highlight Outline Color',
+		})
+		Options.HighlightOutline:OnChanged(function()
+			getgenv().outlinecolor = Options.HighlightOutline.Value
+		end)
+		p:AddToggle('VisualDot', {
+			Text = 'Dot',
+			Default = false,
+			Tooltip = 'Adds A Dot To The Targets Aimpart',
+		})
+		Toggles.VisualDot:OnChanged(function()
+			Lock.Visualize.Dot = Toggles.VisualDot.Value
+		end)
+		Toggles.VisualDot:AddColorPicker(
+			'DotColor',
+			{
+				Default = Color3.new(0, 1, 0),
+				Title = 'Dot Color',
+				Transparency = 1,
+			}
+		)
+		Options.DotColor:OnChanged(function()
+			Lock.Drawings.Dot.Color = Options.DotColor.Value
+			Lock.Drawings.Dot.Transparency = Options.DotColor.Transparency
+		end)
+		p:AddToggle('VisualTracer', {
+			Text = 'Tracer',
+			Default = false,
+			Tooltip = 'Adds A Tracer From You To Your Target',
+		})
+		Toggles.VisualTracer:OnChanged(function()
+			Lock.Visualize.Tracer[1] = Toggles.VisualTracer.Value
+		end)
+		Toggles.VisualTracer:AddColorPicker(
+			'TracerColor',
+			{
+				Default = Color3.new(0, 1, 0),
+				Title = 'Tracer Color',
+				Transparency = 1,
+			}
+		)
+		Options.TracerColor:OnChanged(function()
+			Lock.Drawings.Tracer.Color = Options.TracerColor.Value
+			Lock.Drawings.Tracer.Transparency = Options.TracerColor.Transparency
+		end)
+		p:AddDropdown('TracerOrigin', {
+			Values = { 'Head', 'Mouse', 'Gun', 'Crosshair' },
+			Default = 1,
+			Multi = false,
+			Text = 'Tracer Origin',
+			Tooltip = 'Customize The Tracer Origin',
+		})
+		Options.TracerOrigin:OnChanged(function()
+			Lock.Visualize.Tracer[2] = Options.TracerOrigin.Value
+		end)
+		p:AddToggle(
+			'TargetUI',
+			{
+				Text = 'Target UI',
+				Default = false,
+				Tooltip = 'Get info on your targets',
+			}
+		)
+		Toggles.TargetUI:OnChanged(function()
+			Lock.Visualize.TargetUI = Toggles.TargetUI.Value
+		end)
+		p:AddToggle('TargetFOV', {
+			Text = 'FOV',
+			Default = false,
+			Tooltip = 'Adds A Fake Hitbox On Your Target',
+		})
+		Toggles.TargetFOV:OnChanged(function()
+			Lock.Drawings.FOV.Visible = Toggles.TargetFOV.Value
+		end)
+		Toggles.TargetFOV:AddColorPicker(
+			'FOVColor',
+			{
+				Default = Color3.new(0, 1, 0),
+				Title = 'FOV Color',
+				Transparency = 1,
+			}
+		)
+		Options.FOVColor:OnChanged(function()
+			Lock.Drawings.FOV.Color = Options.FOVColor.Value
+			Lock.Drawings.FOV.Transparency = Options.FOVColor.Transparency
+		end)
+		local o = tick()
+		local p = 0
+		local s = 240
+		local o = game:GetService('RunService').RenderStepped:Connect(function()
+			p += 1
+			if (tick() - o) >= 1 then
+				s = p
+				o = tick()
+				p = 0
+			end
+			d:SetWatermark(
+				('Coolbrain.lol | %s fps | %s ms | Private Build'):format(
+					math.floor(s),
+					math.floor(
+						game:GetService('Stats').Network.ServerStatsItem['Data Ping']
+							:GetValue()
+					)
+				)
+			)
+			d:OnUnload(function()
+				d.Unloaded = true
+			end)
+		end)
+		local o = k['Settings']:AddRightGroupbox('Menu')
+		o:AddLabel('Menu Keybind'):AddKeyPicker(
+			'MenuKeybind',
+			{ Default = 'End', NoUI = true, Text = 'Menu keybind' }
+		)
+		o:AddToggle('KeybindList', {
+			Text = 'Keybind List',
+			Default = false,
+			Tooltip = 'Toggles the Keybind List',
+		})
+		Toggles.KeybindList:OnChanged(function()
+			d.KeybindFrame.Visible = Toggles.KeybindList.Value
+		end)
+		o:AddToggle(
+			'Watermark',
+			{
+				Text = 'Watermark',
+				Default = false,
+				Tooltip = 'Toggles the Watermark',
+			}
+		)
+		Toggles.Watermark:OnChanged(function()
+			d:SetWatermarkVisibility(Toggles.Watermark.Value)
+		end)
+		o:AddDropdown('UINotis', {
+			Values = { 'Xaxa', 'Roblox', 'Akali' },
+			Default = 2,
+			Multi = false,
+			Text = 'Notification Type',
+			Tooltip = 'Change What Notifications Show Up',
+		})
+		Options.UINotis:OnChanged(function()
+			getgenv().NotiMode = Options.UINotis.Value
+		end)
+		local o = o:AddButton({
+			Text = 'Unload',
+			Func = function()
+				d:Unload()
+			end,
+			DoubleClick = true,
+			Tooltip = 'Unloads The Cheat',
+		})
+		local o = o:AddButton({
+			Text = 'Join Discord',
+			Func = function()
+				setclipboard('discord.gg/aimware')
+				b:BuildNotificationUI()
+				Notifications('discord.gg/aimware')
+				local a = (syn and syn.request)
+					or (http and http.request)
+					or http_request
+				local b = game:GetService('HttpService')
+				if a then
+					a({
+						Url = 'http://127.0.0.1:6463/rpc?v=1',
+						Method = 'POST',
+						Headers = {
+							['Content-Type'] = 'application/json',
+							Origin = 'https://discord.com',
+						},
+						Body = b:JSONEncode({
+							cmd = 'INVITE_BROWSER',
+							nonce = b:GenerateGUID(false),
+							args = { code = 'lockers' },
+						}),
+					})
+				end
+			end,
+			DoubleClick = false,
+			Tooltip = 'Joins Our Discord',
+		})
+		d.ToggleKeybind = Options.MenuKeybind
+		e:SetLibrary(d)
+		j:SetLibrary(d)
+		e:SetFolder('Coolbrainlol-thm')
+		j:SetFolder('Coolbrainlol-cfg')
+		j:BuildConfigSection(k['Settings'])
+		e:ApplyToTab(k['Settings'])
+		Options.TargetBind:OnClick(function()
+			if Lock.Enabled then
+				Lock.Locking = not Lock.Locking
+				if Lock.Locking == true then
+					Lock.Target.Player = Lock:GetClosestPlayer()
+					if Lock.Visualize.TargetUI then
+						c.TextLabel.Text = '@' .. tostring(Lock.Target.Player)
+						c.TextLabel_2.Text = Lock.Target.Player.DisplayName
+						r.RenderStepped:Connect(function()
+							c.TextLabel_1.Text = 'Health: '
+								.. tostring(
+									Lock.Target.Player.Character.Humanoid.Health
+								)
+						end)
+						local a = Lock.Target.Player
+						local a = Lock.Target.Player.UserId
+						local b = Enum.ThumbnailType.HeadShot
+						local d = Enum.ThumbnailSize.Size420x420
+						local a, b = q:GetUserThumbnailAsync(a, b, d)
+						local b = c.ImageLabel
+						b.Image = a
+						b.Size = UDim2.new(0, 75, 0, 75)
+						c.Frame.Visible = true
+					end
+					if Lock.Visualize.Notify == true then
+						if Lock.Mode == 'Target Aim' then
+							b:BuildNotificationUI()
+							Notifications(
+								'Locked onto: '
+									.. Lock.Target.Player.DisplayName
+							)
+							wait(1)
+							print(Lock.Target.Prediction)
+						else
+							b:BuildNotificationUI()
+							Notifications('Silent Aim Enabled')
+						end
+					else
+					end
+					if Lock.ViewAt then
+						l.CameraSubject = Lock.Target.Player.Character.Humanoid
+					end
+				else
+					if Lock.Visualize.TargetUI then
+						c.Frame.Visible = false
+					end
+					Lock.Drawings.Dot.Visible = false
+					Lock.Drawings.Tracer.Visible = false
+					l.CameraSubject = t.Character.Humanoid
+					t.Character.Humanoid.AutoRotate = true
+					if Lock.Visualize.Notify == true then
+						if Lock.Mode == 'Target Aim' then
+							b:BuildNotificationUI()
+							Notifications('Unlocked')
+						else
+							b:BuildNotificationUI()
+							Notifications('Silent Aim Disabled')
+						end
+					end
+				end
+			end
+		end)
+		r.Heartbeat:Connect(function(a)
+			if
+				Lock.Drawings.FOV.Visible
+				and Lock.Drawings.FOV.Position ~= f(w.X, w.Y + n)
+			then
+				Lock.Drawings.FOV.Position = f(w.X, w.Y + n)
+			end
+			if
+				Lock.Locking
+				and Lock.Target.Player
+				and Lock:GetPlayerStatus(Lock.Target.Player)
+			then
+				if Lock.Mode == 'Silent Aim' then
+					Lock.Target.Player = Lock:GetClosestPlayer()
+				end
+				if Lock.Target.Player and Lock.Target.Player.Character then
+					Lock.Target.Status =
+						Lock:GetPlayerStatus(Lock.Target.Player)
+					Lock.Target.Velocity = Lock.Resolver
+							and Lock:CalculateAbsolutePosition(
+								Lock.Target.Player
+							)
+						or Lock.Target.Player.Character.HumanoidRootPart.Velocity
+					if Lock.Prediction.PingBased then
+						local a =
+							game:GetService('Stats').Network.ServerStatsItem['Data Ping']
+								:GetValueString()
+						local a = string.split(a, '(')
+						local a = tonumber(a[1])
+						if a < 10 then
+							Lock.Target.Prediction = 0.1112873
+						elseif a < 20 then
+							Lock.Target.Prediction = 0.1211928
+						elseif a < 30 then
+							Lock.Target.Prediction = 0.1254263
+						elseif a < 40 then
+							Lock.Target.Prediction = 0.1314356
+						elseif a < 50 then
+							Lock.Target.Prediction = 0.1368384
+						elseif a < 60 then
+							Lock.Target.Prediction = 0.12671983
+						elseif a < 70 then
+							Lock.Target.Prediction = 0.12862974
+						elseif a < 80 then
+							Lock.Target.Prediction = 0.13581963
+						elseif a < 90 then
+							Lock.Target.Prediction = 0.13873952
+						elseif a < 100 then
+							Lock.Target.Prediction = 0.14173456
+						elseif a < 110 then
+							Lock.Target.Prediction = 0.14362652
+						elseif a < 120 then
+							Lock.Target.Prediction = 0.14683943
+						elseif a < 130 then
+							Lock.Target.Prediction = 0.15175864
+						elseif a < 140 then
+							Lock.Target.Prediction = 0.15382643
+						elseif a < 150 then
+							Lock.Target.Prediction = 0.15873582
+						end
+					end
+					if Lock.Target_Strafe[1] then
+						Lock.Target.Angle += Lock.Target_Strafe[2]
+						t.Character.HumanoidRootPart.CFrame = Lock.Target.Player.Character.HumanoidRootPart.CFrame
+							* i(0, m(Lock.Target.Angle), 0)
+							* h(0, Lock.Target_Strafe[4], Lock.Target_Strafe[3])
+					end
+					if Lock.LookAt then
+						t.Character.Humanoid.AutoRotate = false
+						local a = CFrame.new(
+							t.Character.PrimaryPart.Position,
+							Vector3.new(
+								Lock.Target.Player.Character.HumanoidRootPart.Position.X,
+								t.Character.PrimaryPart.Position.Y,
+								Lock.Target.Player.Character.HumanoidRootPart.Position.Z
+							)
+						)
+						t.Character:SetPrimaryPartCFrame(a)
+					end
+					if Lock.Target.Position then
+						local a, b =
+							l:WorldToViewportPoint(Lock.Target.Position)
+						local c = f(w.X, w.Y + 36)
+						local c = (c - f(a.X, a.Y)).Magnitude
+						if Lock.Drawings.FOV.Visible then
+							Lock.Drawings.FOV.Position = f(w.X, w.Y + 36)
+							if c >= Lock.Drawings.FOV.Radius then
+								Lock.Target.Status = false
+							end
+						end
+						if Lock.Visualize.Hitbox == true then
+							Lock.Drawings.FakeHitbox.CFrame =
+								h(Lock.Target.Position)
+							Lock.Drawings.FakeHitbox.Size = g(
+								Lock.Visualize.X,
+								Lock.Visualize.Y,
+								Lock.Visualize.Z
+							)
+						else
+							Lock.Drawings.FakeHitbox.CFrame = h(999, 9999, 999)
+						end
+						if b then
+							if Lock.Visualize.Tracer[1] then
+								Lock.Drawings.Tracer.Visible = true
+								if
+									Lock:GetTracerOrigin(
+										Lock.Visualize.Tracer[2]
+									) ~= nil
+								then
+									local a, b = Lock:GetTracerOrigin(
+										Lock.Visualize.Tracer[2]
+									)
+									if a then
+										Lock.Drawings.Tracer.From =
+											Vector2.new(a.X, a.Y)
+									end
+								end
+								Lock.Drawings.Tracer.To = Vector2.new(a.X, a.Y)
+							end
+							if Lock.Visualize.Dot then
+								Lock.Drawings.Dot.Visible = true
+								Lock.Drawings.Dot.Position = f(a.X, a.Y)
+							else
+								Lock.Drawings.Dot.Visible = false
+							end
+							if
+								Lock.Visualize.Strafe and Lock.Target_Strafe[1]
+							then
+							end
+						else
+							Lock.Drawings.Dot.Visible = false
+							Lock.Drawings.Tracer.Visible = false
+						end
+					end
+				end
+			end
+		end)
+		if not LPH_OBFUSCATED then
+			getfenv().LPH_NO_VIRTUALIZE = function(a)
+				return a
+			end
+		end
+		local b
+		b = hookmetamethod(
+			game,
+			'__index',
+			LPH_NO_VIRTUALIZE(function(a, c)
+				if
+					(a:IsA('Mouse') and (c == 'Hit' or c == 'Target'))
+					and Lock.Locking
+					and Lock.Target.Player
+				then
+					local a = Lock.Prediction.Part or 'HumanoidRootPart'
+					if
+						Lock.Prediction.Air == true
+						and Lock.Target.Player.Character.Humanoid.FloorMaterial
+							== Enum.Material.Air
+					then
+						SilentArg = Lock.Target.Player.Character['LeftFoot'].Position
+							+ (Lock.Target.Velocity * Lock.Target.Prediction)
+					else
+						SilentArg = Lock.Target.Player.Character[a].Position
+							+ (Lock.Target.Velocity * Lock.Target.Prediction)
+					end
+					Lock.Target.Position = SilentArg
+					if Lock.Target.Status == true then
+						return (c == 'Hit' and h(SilentArg))
+					end
+				end
+				return b(a, c)
+			end)
+		)
+		Notifications(
+			'Loaded In '
+				.. string.format('%.2f', tostring(tick() - a, nil))
+				.. tostring(' Seconds')
+		)
+		a = nil
+	end
+	if boostframes then
+		getgenv().boostFPS = true
+		local a = game:GetService('VirtualInputManager')
+		setfpscap(999)
+		game.DescendantAdded:Connect(function(a)
+			if
+				a.Name == 'MainView'
+				and a.Parent.Name == 'DevConsoleUI'
+				and boostFPS
+			then
+				task.wait()
+				local b = a.Parent.Parent.Parent
+				b.Enabled = false
+				a.Visible = false
+			end
+		end)
+		a:SendKeyEvent(true, 'F9', 0, game)
+		wait()
+		a:SendKeyEvent(false, 'F9', 0, game)
+		while true do
+			task.wait()
+			if not boostFPS then
+				continue
+			end
+		end
+	end
+end)
