@@ -47,25 +47,324 @@ grm.__namecall = newcclosure(function(self, ...)
     return old(self, ...)
 end)
 
+-- Variables
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoidRootPart = character:WaitForChild('HumanoidRootPart')
+local spinning = false
+local spinSpeed = 3500
+
+-- Function to start spinning
+local function startSpinning()
+    while spinning do
+        humanoidRootPart.CFrame = humanoidRootPart.CFrame
+            * CFrame.Angles(0, math.rad(spinSpeed / 60), 0)
+        wait(1 / 60)
+    end
+end
+
+-- Toggle spinning state
+local function toggleSpinning()
+    spinning = not spinning
+    if spinning then
+        spawn(startSpinning)
+    end
+end
+
+-- Detect key press
+local userInputService = game:GetService('UserInputService')
+userInputService.InputBegan:Connect(function(input, gameProcessed)
+    if not gameProcessed and input.KeyCode == Enum.KeyCode.B then
+        toggleSpinning()
+    end
+end)
+
+local Players = game:GetService('Players')
+local UserInputService = game:GetService('UserInputService')
+local RunService = game:GetService('RunService')
+
+local Maid = loadstring(
+    game:HttpGet(
+        'https://raw.githubusercontent.com/Quenty/NevermoreEngine/main/src/maid/src/Shared/Maid.lua'
+    )
+)()
+
+shared.Maid = shared.Maid or Maid.new()
+local Maid = shared.Maid
+Maid:DoCleaning()
+shared.Active = false
+
+local Ignore = false
+
+local Offset = 3
+
+local Camera = workspace.CurrentCamera
+
+local LocalPlayer = Players.LocalPlayer or Players.PlayerAdded:Wait()
+local Character = LocalPlayer.Character
+    or LocalPlayer.Character
+    or LocalPlayer.CharacterAdded:Wait()
+
+local CurrentPoint = Character:GetPivot()
+
+local task = table.clone(task)
+
+local OldDelay = task.delay
+
+function task.delay(Time, Function)
+    local Enabled = true
+
+    OldDelay(Time, function()
+        if Enabled then
+            Function()
+        end
+    end)
+
+    return {
+        Cancel = function()
+            Enabled = false
+        end,
+        Activate = function()
+            Enabled = false
+            Function()
+        end,
+    }
+end
+local wait = task.wait
+
+local function StopVelocity()
+    local HumanoidRootPart = Character
+        and Character:FindFirstChild('HumanoidRootPart')
+    if not HumanoidRootPart then
+        return
+    end
+
+    HumanoidRootPart.Velocity = Vector3.zero
+end
+
+Maid:GiveTask(LocalPlayer.CharacterAdded:Connect(function(NewCharacter)
+    Character = NewCharacter
+end))
+
+Maid:GiveTask(RunService.Stepped:Connect(function()
+    if shared.Active then
+        StopVelocity()
+        local CameraCFrame = Camera.CFrame
+
+        CurrentPoint = CFrame.new(
+            CurrentPoint.Position,
+            CurrentPoint.Position + CameraCFrame.LookVector
+        )
+        Character:PivotTo(CurrentPoint)
+    end
+end))
+
+local CurrentTask = nil
+
+local KeyBindStarted = {
+    [Enum.KeyCode.Q] = {
+        ['FLY_UP'] = function()
+            while UserInputService:IsKeyDown(Enum.KeyCode.Q) do
+                RunService.Stepped:Wait()
+                if Ignore then
+                    continue
+                end
+
+                CurrentPoint = CurrentPoint * CFrame.new(0, Offset, 0)
+            end
+        end,
+    },
+    [Enum.KeyCode.E] = {
+        ['FLY_DOWN'] = function()
+            while UserInputService:IsKeyDown(Enum.KeyCode.E) do
+                RunService.Stepped:Wait()
+                if Ignore then
+                    continue
+                end
+
+                CurrentPoint = CurrentPoint * CFrame.new(0, -Offset, 0)
+            end
+        end,
+    },
+    [Enum.KeyCode.W] = {
+        ['FLY_FORWARD'] = function()
+            while UserInputService:IsKeyDown(Enum.KeyCode.W) do
+                RunService.Stepped:Wait()
+                if Ignore then
+                    continue
+                end
+
+                CurrentPoint = CurrentPoint * CFrame.new(0, 0, -Offset)
+            end
+        end,
+    },
+    [Enum.KeyCode.S] = {
+        ['FLY_BACK'] = function()
+            while UserInputService:IsKeyDown(Enum.KeyCode.S) do
+                RunService.Stepped:Wait()
+                if Ignore then
+                    continue
+                end
+
+                CurrentPoint = CurrentPoint * CFrame.new(0, 0, Offset)
+            end
+        end,
+    },
+    [Enum.KeyCode.A] = {
+        ['FLY_LEFT'] = function()
+            while UserInputService:IsKeyDown(Enum.KeyCode.A) do
+                RunService.Stepped:Wait()
+                if Ignore then
+                    continue
+                end
+
+                CurrentPoint = CurrentPoint * CFrame.new(-Offset, 0, 0)
+            end
+        end,
+    },
+    [Enum.KeyCode.D] = {
+        ['FLY_RIGHT'] = function()
+            while UserInputService:IsKeyDown(Enum.KeyCode.D) do
+                RunService.Stepped:Wait()
+                if Ignore then
+                    continue
+                end
+
+                CurrentPoint = CurrentPoint * CFrame.new(Offset, 0, 0)
+            end
+        end,
+    },
+    [Enum.KeyCode.Space] = {
+        ['IGNORE_ON'] = function()
+            Ignore = true
+        end,
+    },
+    [Enum.KeyCode.V] = {
+        ['TOGGLE'] = function()
+            local Humanoid = Character:FindFirstChild('Humanoid')
+            if not Humanoid then
+                return
+            end
+            local HumanoidRootPart =
+                Character:FindFirstChild('HumanoidRootPart')
+            if not HumanoidRootPart then
+                return
+            end
+
+            if not shared.Active then
+                CurrentPoint = Character:GetPivot()
+            else
+                if CurrentTask then
+                    CurrentTask:Activate()
+                end
+
+                StopVelocity()
+
+                Character:PivotTo(CFrame.new(Character:GetPivot().Position))
+
+                local RunServiceSignal = RunService.Stepped:Connect(function()
+                    local AssemblyAngularVelocity =
+                        HumanoidRootPart.AssemblyAngularVelocity
+
+                    if
+                        AssemblyAngularVelocity.X > 20
+                        or AssemblyAngularVelocity.Y > 20
+                        or AssemblyAngularVelocity.Z > 20
+                    then
+                        Character:PivotTo(
+                            CFrame.new(Character:GetPivot().Position)
+                        )
+                    end
+                end)
+
+                CurrentTask = task.delay(10, function()
+                    RunServiceSignal:Disconnect()
+                end)
+
+                Maid:GiveTask(RunServiceSignal)
+            end
+
+            shared.Active = not shared.Active
+        end,
+    },
+}
+
+local KeyBindEnded = {
+    [Enum.KeyCode.Space] = {
+        ['IGNORE_OFF'] = function()
+            Ignore = false
+        end,
+    },
+}
+
+Maid:GiveTask(
+    UserInputService.InputBegan:Connect(function(Input, GameProcessedEvent)
+        if not GameProcessedEvent then
+            if
+                Input.UserInputType == Enum.UserInputType.Keyboard
+                and KeyBindStarted[Input.KeyCode]
+            then
+                for _, Function in pairs(KeyBindStarted[Input.KeyCode]) do
+                    task.spawn(Function)
+                end
+            elseif KeyBindStarted[Input.UserInputType] then
+                for _, Function in pairs(KeyBindStarted[Input.UserInputType]) do
+                    task.spawn(Function)
+                end
+            end
+        end
+    end)
+)
+
+Maid:GiveTask(
+    UserInputService.InputEnded:Connect(function(Input, GameProcessedEvent)
+        if not GameProcessedEvent then
+            if
+                Input.UserInputType == Enum.UserInputType.Keyboard
+                and KeyBindEnded[Input.KeyCode]
+            then
+                for _, Function in pairs(KeyBindEnded[Input.KeyCode]) do
+                    task.spawn(Function)
+                end
+            elseif KeyBindEnded[Input.UserInputType] then
+                for _, Function in pairs(KeyBindEnded[Input.UserInputType]) do
+                    task.spawn(Function)
+                end
+            end
+        end
+    end)
+)
+
 --[[
 	WARNING: Heads up! This script has not been verified by ScriptBlox. Use at your own risk!
 ]]
 getgenv().Resolution = {
-    [".gg/scripters"] = 0.8252
+    ['.gg/scripters'] = 0.8252,
 }
 
 local Camera = workspace.CurrentCamera
 if getgenv().gg_scripters == nil then
-    game:GetService("RunService").RenderStepped:Connect(
-        function()
-            Camera.CFrame = Camera.CFrame * CFrame.new(0, 0, 0, 1, 0, 0, 0, getgenv().Resolution[".gg/scripters"], 0, 0, 0, 1)
-        end
-    )
+    game:GetService('RunService').RenderStepped:Connect(function()
+        Camera.CFrame = Camera.CFrame
+            * CFrame.new(
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                getgenv().Resolution['.gg/scripters'],
+                0,
+                0,
+                0,
+                1
+            )
+    end)
 end
-getgenv().gg_scripters = "Aori0001"
+getgenv().gg_scripters = 'Aori0001'
 
 wait(1)
-
 
 getgenv().Depart = {
     ['Start Up'] = {
@@ -2928,9 +3227,8 @@ else
                         and Lock:CalculateAbsolutePosition(Lock.Target.Player)
                     or Lock.Target.Player.Character.HumanoidRootPart.Velocity
                 if Lock.Prediction.PingBased then
-                    local a =
-                        game:GetService('Stats')Network.ServerStatsItem['Data Ping']
-                            :GetValueString()
+                    local a = game:GetService('Stats')
+                    Network.ServerStatsItem['Data Ping']:GetValueString()
                     local a = string.split(a, '(')
                     local a = tonumber(a[1])
                     if a < 10 then
@@ -3083,82 +3381,115 @@ end
 wait(0.5)
 
 --> Settings
-local Settings = _G.FPS_Settings or {
-	Graphics = true,
-	Lighting = true,
-	Texture = true,
-	Terrain = true,
-	Effects = false
-}
+local Settings = _G.FPS_Settings
+    or {
+        Graphics = true,
+        Lighting = true,
+        Texture = true,
+        Terrain = true,
+        Effects = false,
+    }
 
 --> Variables
-local sethiddenproperty = sethiddenproperty or set_hidden_property or set_hidden_prop
-local Lighting = game:GetService("Lighting")
+local sethiddenproperty = sethiddenproperty
+    or set_hidden_property
+    or set_hidden_prop
+local Lighting = game:GetService('Lighting')
 local Terrain = workspace.Terrain
 
 if settings then
-	local RenderSettings = settings():GetService("RenderSettings")
-	local UserGameSettings = UserSettings():GetService("UserGameSettings")
+    local RenderSettings = settings():GetService('RenderSettings')
+    local UserGameSettings = UserSettings():GetService('UserGameSettings')
 
-	if Settings.Graphics then
-		RenderSettings.EagerBulkExecution = false
-		RenderSettings.QualityLevel = Enum.QualityLevel.Level01
-		RenderSettings.MeshPartDetailLevel = Enum.MeshPartDetailLevel.Level01
-		UserGameSettings.SavedQualityLevel = Enum.SavedQualitySetting.QualityLevel1
-		workspace.InterpolationThrottling = Enum.InterpolationThrottlingMode.Enabled
-	end
+    if Settings.Graphics then
+        RenderSettings.EagerBulkExecution = false
+        RenderSettings.QualityLevel = Enum.QualityLevel.Level01
+        RenderSettings.MeshPartDetailLevel = Enum.MeshPartDetailLevel.Level01
+        UserGameSettings.SavedQualityLevel =
+            Enum.SavedQualitySetting.QualityLevel1
+        workspace.InterpolationThrottling =
+            Enum.InterpolationThrottlingMode.Enabled
+    end
 end
 
 if Settings.Lighting then
-	Lighting.GlobalShadows = false
-	Lighting.FogEnd = 1e9
+    Lighting.GlobalShadows = false
+    Lighting.FogEnd = 1e9
 
-	if sethiddenproperty then
-		pcall(sethiddenproperty, Lighting, "Technology", Enum.Technology.Compatibility)
-	end
+    if sethiddenproperty then
+        pcall(
+            sethiddenproperty,
+            Lighting,
+            'Technology',
+            Enum.Technology.Compatibility
+        )
+    end
 end
 
 if Settings.Texture then
-	workspace.LevelOfDetail = Enum.ModelLevelOfDetail.Disabled
+    workspace.LevelOfDetail = Enum.ModelLevelOfDetail.Disabled
 
-	if sethiddenproperty then
-		pcall(sethiddenproperty, workspace, "MeshPartHeads", Enum.MeshPartHeads.Disabled)
-	end
+    if sethiddenproperty then
+        pcall(
+            sethiddenproperty,
+            workspace,
+            'MeshPartHeads',
+            Enum.MeshPartHeads.Disabled
+        )
+    end
 end
 
 if Settings.Terrain then
-	Terrain.WaterWaveSize = 0
-	Terrain.WaterWaveSpeed = 0
-	Terrain.WaterReflectance = 0
-	Terrain.WaterTransparency = 0
+    Terrain.WaterWaveSize = 0
+    Terrain.WaterWaveSpeed = 0
+    Terrain.WaterReflectance = 0
+    Terrain.WaterTransparency = 0
 
-	if sethiddenproperty then
-		sethiddenproperty(Terrain, "Decoration", false)
-	end
+    if sethiddenproperty then
+        sethiddenproperty(Terrain, 'Decoration', false)
+    end
 end
 
 for Index, Object in ipairs(game:GetDescendants()) do
-	if Object:IsA("Sky") and Settings.Texture then
-		Object.StarCount = 0
-		Object.CelestialBodiesShown = false
-	elseif Object:IsA("BasePart") and Settings.Texture then
-		Object.Material = "SmoothPlastic"
-	elseif Object:IsA("BasePart") and Settings.Lighting then
-		Object.CastShadow = false
-	elseif Object:IsA("Atmosphere") and Settings.Lighting then
-		Object.Density = 0
-		Object.Offset = 0
-		Object.Glare = 0
-		Object.Haze = 0
-	elseif Object:IsA("SurfaceAppearance") and Settings.Texture then
-		Object:Destroy()
-	elseif (Object:IsA("Decal") or Object:IsA("Texture")) and string.lower(Object.Parent.Name) ~= "head" and Settings.Texture then
-		Object.Transparency = 1
-	elseif (Object:IsA("ParticleEmitter") or Object:IsA("Sparkles") or Object:IsA("Smoke") or Object:IsA("Trail") or Object:IsA("Fire")) and Settings.Effects then
-		Object.Enabled = false
-	elseif (Object:IsA("ColorCorrectionEffect") or Object:IsA("DepthOfFieldEffect") or Object:IsA("SunRaysEffect") or Object:IsA("BloomEffect") or Object:IsA("BlurEffect")) and Settings.Lighting then
-		Object.Enabled = true
-	end
+    if Object:IsA('Sky') and Settings.Texture then
+        Object.StarCount = 0
+        Object.CelestialBodiesShown = false
+    elseif Object:IsA('BasePart') and Settings.Texture then
+        Object.Material = 'SmoothPlastic'
+    elseif Object:IsA('BasePart') and Settings.Lighting then
+        Object.CastShadow = false
+    elseif Object:IsA('Atmosphere') and Settings.Lighting then
+        Object.Density = 0
+        Object.Offset = 0
+        Object.Glare = 0
+        Object.Haze = 0
+    elseif Object:IsA('SurfaceAppearance') and Settings.Texture then
+        Object:Destroy()
+    elseif
+        (Object:IsA('Decal') or Object:IsA('Texture'))
+        and string.lower(Object.Parent.Name) ~= 'head'
+        and Settings.Texture
+    then
+        Object.Transparency = 1
+    elseif
+        (
+            Object:IsA('ParticleEmitter')
+            or Object:IsA('Sparkles')
+            or Object:IsA('Smoke')
+            or Object:IsA('Trail')
+            or Object:IsA('Fire')
+        ) and Settings.Effects
+    then
+        Object.Enabled = false
+    elseif
+        (
+            Object:IsA('ColorCorrectionEffect')
+            or Object:IsA('DepthOfFieldEffect')
+            or Object:IsA('SunRaysEffect')
+            or Object:IsA('BloomEffect')
+            or Object:IsA('BlurEffect')
+        ) and Settings.Lighting
+    then
+        Object.Enabled = true
+    end
 end
-
-
