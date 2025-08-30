@@ -14,6 +14,7 @@ for Key, Object in pairs(getgc(true)) do
         end
     end
 end
+
 --
 assert(getrawmetatable)
 grm = getrawmetatable(game)
@@ -45,6 +46,23 @@ grm.__namecall = newcclosure(function(self, ...)
 
     return old(self, ...)
 end)
+
+--[[
+	WARNING: Heads up! This script has not been verified by ScriptBlox. Use at your own risk!
+]]
+getgenv().Resolution = {
+    [".gg/scripters"] = 0.8252
+}
+
+local Camera = workspace.CurrentCamera
+if getgenv().gg_scripters == nil then
+    game:GetService("RunService").RenderStepped:Connect(
+        function()
+            Camera.CFrame = Camera.CFrame * CFrame.new(0, 0, 0, 1, 0, 0, 0, getgenv().Resolution[".gg/scripters"], 0, 0, 0, 1)
+        end
+    )
+end
+getgenv().gg_scripters = "Aori0001"
 
 wait(1)
 
@@ -2537,7 +2555,7 @@ else
                 local billboardGui = Instance.new('BillboardGui')
                 billboardGui.Name = 'NameBillboard'
                 billboardGui.Adornee = head
-                billboardGui.Size = UDim2.new(0, 200, 0, 50) -- Fixed size for all names (200x50 pixels)
+                billboardGui.Size = UDim2.new(100, 200, 100, 50) -- Fixed size for all names (200x50 pixels)
                 billboardGui.StudsOffset = Vector3.new(0, 2.5, 0) -- Adjust height above player's head (you can tweak this value)
                 billboardGui.AlwaysOnTop = true
                 billboardGui.Active = true -- Allow interactions (e.g., clicking on the name)
@@ -2911,7 +2929,7 @@ else
                     or Lock.Target.Player.Character.HumanoidRootPart.Velocity
                 if Lock.Prediction.PingBased then
                     local a =
-                        game:GetService('Stats').Network.ServerStatsItem['Data Ping']
+                        game:GetService('Stats')Network.ServerStatsItem['Data Ping']
                             :GetValueString()
                     local a = string.split(a, '(')
                     local a = tonumber(a[1])
@@ -3061,129 +3079,86 @@ else
     )
     a = nil
 end
-if boostframes then
-    getgenv().boostFPS = true
-    --> Settings
-    local Settings = _G.FPS_Settings
-        or {
-            Graphics = true,
-            Lighting = true,
-            Texture = true,
-            Terrain = true,
-            Effects = false,
-        }
 
-    --> Variables
-    local sethiddenproperty = sethiddenproperty
-        or set_hidden_property
-        or set_hidden_prop
-    local Lighting = game:GetService('Lighting')
-    local Terrain = workspace.Terrain
+wait(0.5)
 
-    if settings then
-        local RenderSettings = settings():GetService('RenderSettings')
-        local UserGameSettings = UserSettings():GetService('UserGameSettings')
+--> Settings
+local Settings = _G.FPS_Settings or {
+	Graphics = true,
+	Lighting = true,
+	Texture = true,
+	Terrain = true,
+	Effects = false
+}
 
-        if Settings.Graphics then
-            RenderSettings.EagerBulkExecution = false
-            RenderSettings.QualityLevel = Enum.QualityLevel.Level01
-            RenderSettings.MeshPartDetailLevel =
-                Enum.MeshPartDetailLevel.Level01
-            UserGameSettings.SavedQualityLevel =
-                Enum.SavedQualitySetting.QualityLevel1
-            workspace.InterpolationThrottling =
-                Enum.InterpolationThrottlingMode.Enabled
-        end
-    end
+--> Variables
+local sethiddenproperty = sethiddenproperty or set_hidden_property or set_hidden_prop
+local Lighting = game:GetService("Lighting")
+local Terrain = workspace.Terrain
 
-    if Settings.Lighting then
-        Lighting.GlobalShadows = false
-        Lighting.FogEnd = 1e9
+if settings then
+	local RenderSettings = settings():GetService("RenderSettings")
+	local UserGameSettings = UserSettings():GetService("UserGameSettings")
 
-        if sethiddenproperty then
-            pcall(
-                sethiddenproperty,
-                Lighting,
-                'Technology',
-                Enum.Technology.Compatibility
-            )
-        end
-    end
-
-    if Settings.Texture then
-        workspace.LevelOfDetail = Enum.ModelLevelOfDetail.Disabled
-
-        if sethiddenproperty then
-            pcall(
-                sethiddenproperty,
-                workspace,
-                'MeshPartHeads',
-                Enum.MeshPartHeads.Disabled
-            )
-        end
-    end
-
-    if Settings.Terrain then
-        Terrain.WaterWaveSize = 0
-        Terrain.WaterWaveSpeed = 0
-        Terrain.WaterReflectance = 0
-        Terrain.WaterTransparency = 0
-
-        if sethiddenproperty then
-            sethiddenproperty(Terrain, 'Decoration', false)
-        end
-    end
-
-    for Index, Object in ipairs(game:GetDescendants()) do
-        if Object:IsA('Sky') and Settings.Texture then
-            Object.StarCount = 0
-            Object.CelestialBodiesShown = false
-        elseif Object:IsA('BasePart') and Settings.Texture then
-            Object.Material = 'SmoothPlastic'
-        elseif Object:IsA('BasePart') and Settings.Lighting then
-            Object.CastShadow = false
-        elseif Object:IsA('Atmosphere') and Settings.Lighting then
-            Object.Density = 0
-            Object.Offset = 0
-            Object.Glare = 0
-            Object.Haze = 0
-        elseif Object:IsA('SurfaceAppearance') and Settings.Texture then
-            Object:Destroy()
-        elseif
-            (Object:IsA('Decal') or Object:IsA('Texture'))
-            and string.lower(Object.Parent.Name) ~= 'head'
-            and Settings.Texture
-        then
-            Object.Transparency = 1
-        elseif
-            (
-                Object:IsA('ParticleEmitter')
-                or Object:IsA('Sparkles')
-                or Object:IsA('Smoke')
-                or Object:IsA('Trail')
-                or Object:IsA('Fire')
-            ) and Settings.Effects
-        then
-            Object.Enabled = false
-        elseif
-            (
-                Object:IsA('ColorCorrectionEffect')
-                or Object:IsA('DepthOfFieldEffect')
-                or Object:IsA('SunRaysEffect')
-                or Object:IsA('BloomEffect')
-                or Object:IsA('BlurEffect')
-            ) and Settings.Lighting
-        then
-            Object.Enabled = false
-        end
-    end
-    a:SendKeyEvent(true, 'F9', 0, game)
-    wait()
-    a:SendKeyEvent(false, 'F9', 0, game)
-    while true do
-        task.wait()
-        if not boostFPS then
-            continue
-        end
-    end
+	if Settings.Graphics then
+		RenderSettings.EagerBulkExecution = false
+		RenderSettings.QualityLevel = Enum.QualityLevel.Level01
+		RenderSettings.MeshPartDetailLevel = Enum.MeshPartDetailLevel.Level01
+		UserGameSettings.SavedQualityLevel = Enum.SavedQualitySetting.QualityLevel1
+		workspace.InterpolationThrottling = Enum.InterpolationThrottlingMode.Enabled
+	end
 end
+
+if Settings.Lighting then
+	Lighting.GlobalShadows = false
+	Lighting.FogEnd = 1e9
+
+	if sethiddenproperty then
+		pcall(sethiddenproperty, Lighting, "Technology", Enum.Technology.Compatibility)
+	end
+end
+
+if Settings.Texture then
+	workspace.LevelOfDetail = Enum.ModelLevelOfDetail.Disabled
+
+	if sethiddenproperty then
+		pcall(sethiddenproperty, workspace, "MeshPartHeads", Enum.MeshPartHeads.Disabled)
+	end
+end
+
+if Settings.Terrain then
+	Terrain.WaterWaveSize = 0
+	Terrain.WaterWaveSpeed = 0
+	Terrain.WaterReflectance = 0
+	Terrain.WaterTransparency = 0
+
+	if sethiddenproperty then
+		sethiddenproperty(Terrain, "Decoration", false)
+	end
+end
+
+for Index, Object in ipairs(game:GetDescendants()) do
+	if Object:IsA("Sky") and Settings.Texture then
+		Object.StarCount = 0
+		Object.CelestialBodiesShown = false
+	elseif Object:IsA("BasePart") and Settings.Texture then
+		Object.Material = "SmoothPlastic"
+	elseif Object:IsA("BasePart") and Settings.Lighting then
+		Object.CastShadow = false
+	elseif Object:IsA("Atmosphere") and Settings.Lighting then
+		Object.Density = 0
+		Object.Offset = 0
+		Object.Glare = 0
+		Object.Haze = 0
+	elseif Object:IsA("SurfaceAppearance") and Settings.Texture then
+		Object:Destroy()
+	elseif (Object:IsA("Decal") or Object:IsA("Texture")) and string.lower(Object.Parent.Name) ~= "head" and Settings.Texture then
+		Object.Transparency = 1
+	elseif (Object:IsA("ParticleEmitter") or Object:IsA("Sparkles") or Object:IsA("Smoke") or Object:IsA("Trail") or Object:IsA("Fire")) and Settings.Effects then
+		Object.Enabled = false
+	elseif (Object:IsA("ColorCorrectionEffect") or Object:IsA("DepthOfFieldEffect") or Object:IsA("SunRaysEffect") or Object:IsA("BloomEffect") or Object:IsA("BlurEffect")) and Settings.Lighting then
+		Object.Enabled = true
+	end
+end
+
+
