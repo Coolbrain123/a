@@ -28,5 +28,5 @@ grm.__namecall = newcclosure(function(self, ...)
 end)
 
 game.StarterGui:SetCore("SendNotification", {
-Title = "Sigmaboy",
-Text = "Ac bypasser by Coolboy4828jea" })
+Title = "Ez bypass",
+Text = "Ac bypassed by Coolboy4828jea" })
