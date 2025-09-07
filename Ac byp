@@ -1,223 +1,119 @@
--- // Anti-kick / hook bypass
-for Key, Object in pairs(getgc(true)) do
-    if type(Object) == 'table' then
-        setreadonly(Object, false)
-        local indexInstance = rawget(Object, 'indexInstance')
-        if type(indexInstance) == 'table' and indexInstance[1] == 'kick' then
-            setreadonly(indexInstance, false)
-            rawset(Object, 'Table', {
-                'kick',
-                function()
-                    coroutine.yield()
-                end,
-            })
-            break
-        end
-    end
-end
-
-assert(getrawmetatable)
-grm = getrawmetatable(game)
-setreadonly(grm, false)
-old = grm.__namecall
-
-grm.__namecall = newcclosure(function(self, ...)
-    local args = { ... }
-
-    local methodName = tostring(args[1])
-
-    local blockedMethods = {
-        'TeleportDetect',
-        'CHECKER_1',
-        'CHECKER',
-        'GUI_CHECK',
-        'OneMoreTime',
-        'checkingSPEED',
-        'BANREMOTE',
-        'PERMAIDBAN',
-        'KICKREMOTE',
-        'BR_KICKPC',
-        'BR_KICKMOBILE',
-    }
-
-    if table.find(blockedMethods, methodName) then
-        return
-    end
-
-    return old(self, ...)
-end)
-
--- // Dependencies
-_G.PRED = 0.025
-local Aiming = loadstring(
-    game:HttpGet(
-        'https://raw.githubusercontent.com/Ezucii/new/main/sourceeeeeeeeeeeeee.lua'
-    )
-)()
-Aiming.TeamCheck(false)
-Aiming.ShowFOV = true
-Aiming.FOV = 55
-
 -- // Services
-local Workspace = game:GetService('Workspace')
-local Players = game:GetService('Players')
-local RunService = game:GetService('RunService')
-local UserInputService = game:GetService('UserInputService')
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local Workspace = game:GetService("Workspace")
+local UserInputService = game:GetService("UserInputService")
+local GuiService = game:GetService("GuiService")
 
--- // Vars
 local LocalPlayer = Players.LocalPlayer
-local Mouse = LocalPlayer:GetMouse()
-local CurrentCamera = Workspace.CurrentCamera
+local Camera = Workspace.CurrentCamera
 
-local DaHoodSettings = {
-    SilentAim = true,
-    AimLock = false,
-    Prediction = 0.121,
-    AimLockKeybind = Enum.KeyCode.E,
+-- // Settings
+local Settings = {
+    Prediction = 0.13,
+    FOVRadius = 60,
+    FOVColor = Color3.fromRGB(255, 0, 0),
+    ShowFOV = true,
+    SilentAimEnabled = false,
 }
-getgenv().DaHoodSettings = DaHoodSettings
 
--- // Overwrite Aiming.Check to account for downed / grabbed
-function Aiming.Check()
-    if
-        not (
-            Aiming.Enabled
-            and Aiming.Selected ~= LocalPlayer
-            and Aiming.SelectedPart ~= nil
-        )
-    then
-        return false
-    end
+-- // FOV Drawing
+local FOVCircle = Drawing.new("Circle")
+FOVCircle.Radius = Settings.FOVRadius
+FOVCircle.Thickness = 2
+FOVCircle.Transparency = 1
+FOVCircle.Filled = false
+FOVCircle.Color = Settings.FOVColor
+FOVCircle.Visible = Settings.ShowFOV
 
-    local Character = Aiming.Character(Aiming.Selected)
-    if not Character then
-        return false
-    end
-
-    local KOd = Character:FindFirstChild('BodyEffects')
-        and Character.BodyEffects:FindFirstChild('K.O')
-        and Character.BodyEffects['K.O'].Value
-    local Grabbed = Character:FindFirstChild('GRABBING_CONSTRAINT') ~= nil
-
-    if KOd or Grabbed then
-        return false
-    end
-
-    return true
-end
-
--- // HOOK __index for silent aim spoof
-local __index
-__index = hookmetamethod(game, '__index', function(t, k)
-    if t:IsA('Mouse') and (k == 'Hit' or k == 'Target') and Aiming.Check() then
-        local SelectedPart = Aiming.SelectedPart
-        if DaHoodSettings.SilentAim and (k == 'Hit' or k == 'Target') then
-            local Hit = SelectedPart.CFrame
-                + (SelectedPart.Velocity * DaHoodSettings.Prediction)
-            return (k == 'Hit' and Hit or SelectedPart)
-        end
-    end
-    return __index(t, k)
-end)
-
--- // Key toggle for Aiming.Enabled
-local player = game.Players.LocalPlayer
-local mouse = player:GetMouse()
-
-mouse.KeyDown:Connect(function(key)
-    if key == 'v' then
-        Aiming.Enabled = not Aiming.Enabled
-    end
-end)
-
--- // Prediction updater + jump state logic
+-- // Update FOV Position (centered for all devices)
 RunService.RenderStepped:Connect(function()
-    local ping = game:GetService('Stats').Network.ServerStatsItem['Data Ping']
-        :GetValueString()
-    local Value = tostring(ping)
-    local pingValue = Value:split(' ')
-    local PingNumber = tonumber(pingValue[1]) or 50
-
-    DaHoodSettings.Prediction = PingNumber / 1000 + _G.PRED
-
-    if
-        Aiming.Selected
-        and Aiming.Character
-        and Aiming.Character:FindFirstChild('Humanoid')
-    then
-        if
-            Aiming.Character.Humanoid.Jump == true
-            and Aiming.Character.Humanoid.FloorMaterial == Enum.Material.Air
-        then
-            Aiming.TargetPart = 'RightFoot'
-        else
-            Aiming.TargetPart = Aiming.SelectedPart
-        end
-    end
+    local viewSize = Camera.ViewportSize
+    FOVCircle.Position = Vector2.new(viewSize.X / 2, viewSize.Y / 2)
 end)
 
--- ================================
--- 🔧 CENTER FOV CIRCLE ON SCREEN
--- ================================
-RunService.RenderStepped:Connect(function()
-    if Aiming.FOVCircle then
-        local cam = workspace.CurrentCamera
-        Aiming.FOVCircle.Position =
-            Vector2.new(cam.ViewportSize.X / 2, cam.ViewportSize.Y / 2)
-    end
-end)
+-- // Target Finder
+local function GetClosestTarget()
+    local closest = nil
+    local closestPart = nil
+    local shortestDist = math.huge
+    local screenCenter = Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y / 2)
 
--- ================================
--- 🎯 CENTER SCREEN TARGETING FIX
--- ================================
-function GetClosestToCenter()
-    local closestPlayer, closestPart, shortestDistance = nil, nil, math.huge
-    local camera = workspace.CurrentCamera
-    local screenCenter =
-        Vector2.new(camera.ViewportSize.X / 2, camera.ViewportSize.Y / 2)
+    for _, player in pairs(Players:GetPlayers()) do
+        if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+            local hrp = player.Character.HumanoidRootPart
+            local pos, visible = Camera:WorldToViewportPoint(hrp.Position)
 
-    for _, player in ipairs(Players:GetPlayers()) do
-        if
-            player ~= LocalPlayer
-            and player.Character
-            and player.Character:FindFirstChild('HumanoidRootPart')
-            and player.Character:FindFirstChild('Humanoid')
-        then
-            if player.Character.Humanoid.Health > 0 then
-                local character = player.Character
-                local targetPart = character:FindFirstChild('Head')
-                    or character:FindFirstChild('HumanoidRootPart')
-                if targetPart then
-                    local screenPos, onScreen =
-                        camera:WorldToViewportPoint(targetPart.Position)
-                    if onScreen then
-                        local distance = (
-                            Vector2.new(screenPos.X, screenPos.Y) - screenCenter
-                        ).Magnitude
-                        if
-                            distance < (Aiming.FOV * 3)
-                            and distance < shortestDistance
-                        then
-                            shortestDistance = distance
-                            closestPlayer = player
-                            closestPart = targetPart
-                        end
-                    end
+            if visible then
+                local dist = (Vector2.new(pos.X, pos.Y) - screenCenter).Magnitude
+                if dist < Settings.FOVRadius and dist < shortestDist then
+                    closest = player
+                    closestPart = hrp
+                    shortestDist = dist
                 end
             end
         end
     end
 
-    Aiming.Selected = closestPlayer
-    Aiming.SelectedPart = closestPart
+    return closest, closestPart
 end
 
--- Auto-select closest target to center
+-- // Input Button (for mobile toggle)
+local function CreateMobileToggleButton()
+    if not UserInputService.TouchEnabled then return end
+
+    local screenGui = Instance.new("ScreenGui", game.CoreGui)
+    screenGui.Name = "SilentAimToggle"
+
+    local button = Instance.new("TextButton", screenGui)
+    button.Size = UDim2.new(0, 100, 0, 40)
+    button.Position = UDim2.new(1, -110, 1, -60)
+    button.Text = "Silent Aim: OFF"
+    button.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    button.TextColor3 = Color3.new(1, 1, 1)
+    button.BorderSizePixel = 0
+
+    button.MouseButton1Click:Connect(function()
+        Settings.SilentAimEnabled = not Settings.SilentAimEnabled
+        button.Text = Settings.SilentAimEnabled and "Silent Aim: ON" or "Silent Aim: OFF"
+    end)
+end
+CreateMobileToggleButton()
+
+-- // Silent Aim Logic
+local SilentTarget = nil
+local SilentPart = nil
+
 RunService.RenderStepped:Connect(function()
-    if Aiming.Enabled and DaHoodSettings.SilentAim then
-        GetClosestToCenter()
+    if Settings.SilentAimEnabled then
+        local target, part = GetClosestTarget()
+        SilentTarget = target
+        SilentPart = part
     else
-        Aiming.Selected = nil
-        Aiming.SelectedPart = nil
+        SilentTarget = nil
+        SilentPart = nil
     end
 end)
+
+-- // Hook __namecall for silent aim
+local mt = getrawmetatable(game)
+setreadonly(mt, false)
+local old = mt.__namecall
+
+mt.__namecall = newcclosure(function(self, ...)
+    local args = {...}
+    local method = getnamecallmethod()
+
+    if tostring(self) == "MainEvent" and method == "FireServer" then
+        local action = args[1]
+        if action == "UpdateMousePos" and SilentPart and Settings.SilentAimEnabled then
+            -- Replace mouse position with target position
+            args[2] = SilentPart.Position + SilentPart.Velocity * Settings.Prediction
+            return old(self, unpack(args))
+        end
+    end
+
+    return old(self, ...)
+end)
+
+setreadonly(mt, true)
