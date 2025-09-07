@@ -1,3 +1,4 @@
+-- // Anti-kick / hook bypass
 for Key, Object in pairs(getgc(true)) do
     if type(Object) == 'table' then
         setreadonly(Object, false)
@@ -15,7 +16,6 @@ for Key, Object in pairs(getgc(true)) do
     end
 end
 
---
 assert(getrawmetatable)
 grm = getrawmetatable(game)
 setreadonly(grm, false)
@@ -47,7 +47,6 @@ grm.__namecall = newcclosure(function(self, ...)
     return old(self, ...)
 end)
 
-
 -- // Dependencies
 _G.PRED = 0.025
 local Aiming = loadstring(
@@ -58,6 +57,7 @@ local Aiming = loadstring(
 Aiming.TeamCheck(false)
 Aiming.ShowFOV = true
 Aiming.FOV = 55
+
 -- // Services
 local Workspace = game:GetService('Workspace')
 local Players = game:GetService('Players')
@@ -77,12 +77,11 @@ local DaHoodSettings = {
 }
 getgenv().DaHoodSettings = DaHoodSettings
 
--- // Overwrite to account downed
+-- // Overwrite Aiming.Check to account for downed / grabbed
 function Aiming.Check()
-    -- // Check A
     if
         not (
-            Aiming.Enabled == true
+            Aiming.Enabled
             and Aiming.Selected ~= LocalPlayer
             and Aiming.SelectedPart ~= nil
         )
@@ -90,80 +89,135 @@ function Aiming.Check()
         return false
     end
 
-    -- // Check if downed
     local Character = Aiming.Character(Aiming.Selected)
-    local KOd = Character:WaitForChild('BodyEffects')['K.O'].Value
+    if not Character then
+        return false
+    end
+
+    local KOd = Character:FindFirstChild('BodyEffects')
+        and Character.BodyEffects:FindFirstChild('K.O')
+        and Character.BodyEffects['K.O'].Value
     local Grabbed = Character:FindFirstChild('GRABBING_CONSTRAINT') ~= nil
 
-    -- // Check B
     if KOd or Grabbed then
         return false
     end
 
-    -- //
     return true
 end
 
--- // Hook
+-- // HOOK __index for silent aim spoof
 local __index
 __index = hookmetamethod(game, '__index', function(t, k)
-    -- // Check if it trying to get our mouse's hit or target and see if we can use it
     if t:IsA('Mouse') and (k == 'Hit' or k == 'Target') and Aiming.Check() then
-        -- // Vars
         local SelectedPart = Aiming.SelectedPart
-
-        -- // Hit/Target
         if DaHoodSettings.SilentAim and (k == 'Hit' or k == 'Target') then
-            -- // Hit to account prediction
             local Hit = SelectedPart.CFrame
                 + (SelectedPart.Velocity * DaHoodSettings.Prediction)
-
-            -- // Return modded val
             return (k == 'Hit' and Hit or SelectedPart)
         end
     end
-
-    -- // Return
     return __index(t, k)
 end)
 
+-- // Key toggle for Aiming.Enabled
 local player = game.Players.LocalPlayer
 local mouse = player:GetMouse()
 
 mouse.KeyDown:Connect(function(key)
     if key == 'v' then
-        if Aiming.Enabled == false then
-            Aiming.Enabled = true
-        else
-            Aiming.Enabled = false
-        end
+        Aiming.Enabled = not Aiming.Enabled
     end
 end)
 
+-- // Prediction updater + jump state logic
 RunService.RenderStepped:Connect(function()
     local ping = game:GetService('Stats').Network.ServerStatsItem['Data Ping']
         :GetValueString()
     local Value = tostring(ping)
     local pingValue = Value:split(' ')
-    local PingNumber = pingValue[1]
+    local PingNumber = tonumber(pingValue[1]) or 50
 
     DaHoodSettings.Prediction = PingNumber / 1000 + _G.PRED
 
     if
-        Aiming.Character.Humanoid.Jump == true
-        and AimlockTarget.Character.Humanoid.FloorMaterial
-            == Enum.Material.Air
+        Aiming.Selected
+        and Aiming.Character
+        and Aiming.Character:FindFirstChild('Humanoid')
     then
-        Aiming.TargetPart = 'RightFoot'
-    else
-        Aiming.Character
-            :WaitForChild('Humanoid').StateChanged
-            :Connect(function(new)
-                if new == Enum.HumanoidStateType.Freefall then
-                    Aiming.TargetPart = 'RightFoot'
-                else
-                    Aiming.TargetPart = Aiming.SelectedPart
+        if
+            Aiming.Character.Humanoid.Jump == true
+            and Aiming.Character.Humanoid.FloorMaterial == Enum.Material.Air
+        then
+            Aiming.TargetPart = 'RightFoot'
+        else
+            Aiming.TargetPart = Aiming.SelectedPart
+        end
+    end
+end)
+
+-- ================================
+-- 🔧 CENTER FOV CIRCLE ON SCREEN
+-- ================================
+RunService.RenderStepped:Connect(function()
+    if Aiming.FOVCircle then
+        local cam = workspace.CurrentCamera
+        Aiming.FOVCircle.Position =
+            Vector2.new(cam.ViewportSize.X / 2, cam.ViewportSize.Y / 2)
+    end
+end)
+
+-- ================================
+-- 🎯 CENTER SCREEN TARGETING FIX
+-- ================================
+function GetClosestToCenter()
+    local closestPlayer, closestPart, shortestDistance = nil, nil, math.huge
+    local camera = workspace.CurrentCamera
+    local screenCenter =
+        Vector2.new(camera.ViewportSize.X / 2, camera.ViewportSize.Y / 2)
+
+    for _, player in ipairs(Players:GetPlayers()) do
+        if
+            player ~= LocalPlayer
+            and player.Character
+            and player.Character:FindFirstChild('HumanoidRootPart')
+            and player.Character:FindFirstChild('Humanoid')
+        then
+            if player.Character.Humanoid.Health > 0 then
+                local character = player.Character
+                local targetPart = character:FindFirstChild('Head')
+                    or character:FindFirstChild('HumanoidRootPart')
+                if targetPart then
+                    local screenPos, onScreen =
+                        camera:WorldToViewportPoint(targetPart.Position)
+                    if onScreen then
+                        local distance = (
+                            Vector2.new(screenPos.X, screenPos.Y) - screenCenter
+                        ).Magnitude
+                        if
+                            distance < (Aiming.FOV * 3)
+                            and distance < shortestDistance
+                        then
+                            shortestDistance = distance
+                            closestPlayer = player
+                            closestPart = targetPart
+                        end
+                    end
                 end
-            end)
+            end
+        end
+    end
+
+    Aiming.Selected = closestPlayer
+    Aiming.SelectedPart = closestPart
+end
+
+-- Auto-select closest target to center
+RunService.RenderStepped:Connect(function()
+    if Aiming.Enabled and DaHoodSettings.SilentAim then
+        GetClosestToCenter()
+    else
+        Aiming.Selected = nil
+        Aiming.SelectedPart = nil
     end
 end)
