@@ -46,9 +46,7 @@ grm.__namecall = newcclosure(function(self, ...)
 
     return old(self, ...)
 end)
-game.StarterGui:SetCore("SendNotification", {
-Title = "Ez bypass",
-Text = "Ac bypassed by Coolboy4828jea" })
+
 
 -- // Dependencies
 _G.PRED = 0.025
@@ -58,7 +56,7 @@ local Aiming = loadstring(
     )
 )()
 Aiming.TeamCheck(false)
-Aiming.ShowFOV = false
+Aiming.ShowFOV = true
 Aiming.FOV = 55
 -- // Services
 local Workspace = game:GetService('Workspace')
