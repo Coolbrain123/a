@@ -30,3 +30,80 @@ end)
 game.StarterGui:SetCore("SendNotification", {
 Title = "Ez bypass",
 Text = "Ac bypassed by Coolboy4828jea" })
+
+--[[
+	WARNING: Heads up! This script has not been verified by ScriptBlox. Use at your own risk!
+]]
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local Workspace = game:GetService("Workspace")
+
+local player = Players.LocalPlayer
+local Camera = Workspace.CurrentCamera
+local Mouse = player:GetMouse()
+
+getgenv().Silent = {
+    Enabled = true, 
+    Prediction = 0.18,
+    TargetPart = "HumanoidRootPart",
+    FOVRadius = 200, 
+    FOVVisible = false, 
+    FOVTransparency = 0.5 
+}
+
+local circle
+pcall(function()
+    circle = Drawing.new("Circle")
+    circle.Color = Color3.fromRGB(255, 255, 255)
+    circle.Thickness = 2
+    circle.Filled = false
+    circle.Transparency = getgenv().Silent.FOVTransparency
+    circle.Radius = getgenv().Silent.FOVRadius
+    circle.Visible = getgenv().Silent.FOVVisible
+end)
+
+local function updateFOVCircle()
+    if not circle then return end
+    pcall(function()
+        local guiInset = game:GetService("GuiService"):GetGuiInset()
+        circle.Position = Vector2.new(Mouse.X, Mouse.Y + guiInset.Y)
+        circle.Radius = getgenv().Silent.FOVRadius
+        circle.Transparency = getgenv().Silent.FOVTransparency
+        circle.Visible = getgenv().Silent.FOVVisible
+    end)
+end
+
+RunService.RenderStepped:Connect(updateFOVCircle)
+
+local function GetClosestForSilent()
+    local closest, distance = nil, getgenv().Silent.FOVRadius
+    for _, v in ipairs(Players:GetPlayers()) do
+        if v ~= player and v.Character and v.Character:FindFirstChild(getgenv().Silent.TargetPart) then
+            local pos, onScreen = Camera:WorldToScreenPoint(v.Character[getgenv().Silent.TargetPart].Position)
+            if onScreen then
+                local diff = (Vector2.new(pos.X, pos.Y) - Vector2.new(Mouse.X, Mouse.Y)).Magnitude
+                if diff < distance then
+                    distance = diff
+                    closest = v
+                end
+            end
+        end
+    end
+    return closest
+end
+
+local mt = getrawmetatable(game)
+setreadonly(mt, false)
+local __index = mt.__index
+
+mt.__index = function(self, key)
+    if getgenv().Silent.Enabled and self == Mouse and key == "Hit" then
+        local target = GetClosestForSilent()
+        if target and target.Character and target.Character:FindFirstChild(getgenv().Silent.TargetPart) then
+            local part = target.Character[getgenv().Silent.TargetPart]
+            return (part.CFrame + (part.Velocity * getgenv().Silent.Prediction))
+        end
+    end
+    return __index(self, key)
+end
+setreadonly(mt, true)
