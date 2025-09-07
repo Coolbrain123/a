@@ -55,7 +55,7 @@ local Aiming = loadstring(
     )
 )()
 Aiming.TeamCheck(false)
-Aiming.ShowFOV = true
+Aiming.ShowFOV = false
 Aiming.FOV = 55
 
 -- // Services
