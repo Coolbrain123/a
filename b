@@ -1,3 +1,168 @@
+-- ESP toggle with K key (added exactly as you provided)
+-- CONFIG
+local TOGGLE_KEY = Enum.KeyCode.K
+
+-- STATE
+local ESPEnabled = true
+local Players = game:GetService('Players')
+local LocalPlayer = Players.LocalPlayer
+local RunService = game:GetService('RunService')
+local Camera = workspace.CurrentCamera
+local UIS = game:GetService('UserInputService')
+local ESPObjects = {}
+local hue = 0
+
+-- FUNCTIONS
+local function rainbowColor(speed)
+    hue = (hue + speed) % 1
+    return Color3.fromHSV(hue, 1, 1)
+end
+
+-- Keybind Toggle
+UIS.InputBegan:Connect(function(input, gp)
+    if not gp and input.KeyCode == TOGGLE_KEY then
+        ESPEnabled = not ESPEnabled
+    end
+end)
+
+-- Create ESP Drawing objects
+local function createESP(player)
+    if ESPObjects[player] then
+        return
+    end
+    ESPObjects[player] = {
+        Box = Drawing.new('Square'),
+        Tracer = Drawing.new('Line'),
+        Name = Drawing.new('Text'),
+        Distance = Drawing.new('Text'),
+        HealthBar = Drawing.new('Line'),
+        HealthBarBG = Drawing.new('Line'),
+    }
+
+    local esp = ESPObjects[player]
+    esp.Box.Thickness = 1
+    esp.Box.Filled = false
+
+    esp.Tracer.Thickness = 0
+
+    esp.Name.Size = 14
+    esp.Name.Center = true
+    esp.Name.Outline = true
+
+    esp.Distance.Size = 14
+    esp.Distance.Center = false
+    esp.Distance.Outline = true
+
+    esp.HealthBar.Thickness = 2
+    esp.HealthBarBG.Thickness = 2
+    esp.HealthBarBG.Color = Color3.new(0, 0, 0)
+end
+
+local function removeESP(player)
+    if ESPObjects[player] then
+        for _, obj in pairs(ESPObjects[player]) do
+            obj:Remove()
+        end
+        ESPObjects[player] = nil
+    end
+end
+
+Players.PlayerRemoving:Connect(removeESP)
+
+-- Main ESP Render Loop
+RunService.RenderStepped:Connect(function()
+    if not ESPEnabled then
+        for _, esp in pairs(ESPObjects) do
+            for _, obj in pairs(esp) do
+                obj.Visible = false
+            end
+        end
+        return
+    end
+
+    local color = rainbowColor(0.0025)
+    local localChar = LocalPlayer.Character
+    local localHRP = localChar and localChar:FindFirstChild('HumanoidRootPart')
+    if not localHRP then
+        return
+    end
+
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player ~= LocalPlayer and player.Character then
+            local hrp = player.Character:FindFirstChild('HumanoidRootPart')
+            local humanoid = player.Character:FindFirstChild('Humanoid')
+
+            if hrp and humanoid and humanoid.Health > 0 then
+                createESP(player)
+                local esp = ESPObjects[player]
+
+                local screenPos, onScreen =
+                    Camera:WorldToViewportPoint(hrp.Position)
+                if onScreen then
+                    local distance = (Camera.CFrame.Position - hrp.Position).Magnitude
+                    local width = math.clamp(1000 / distance, 6, 25)
+                    local height = math.clamp(600 / distance, 6, 20)
+                    local boxPos = Vector2.new(
+                        screenPos.X - width / 2,
+                        screenPos.Y - height / 2
+                    )
+
+                    esp.Box.Position = boxPos
+                    esp.Box.Size = Vector2.new(width, height)
+                    esp.Box.Color = color
+                    esp.Box.Visible = true
+
+                    local fromScreen =
+                        Camera:WorldToViewportPoint(localHRP.Position)
+                    esp.Tracer.From = Vector2.new(fromScreen.X, fromScreen.Y)
+                    esp.Tracer.To = Vector2.new(screenPos.X, screenPos.Y)
+                    esp.Tracer.Color = color
+                    esp.Tracer.Visible = true
+
+                    esp.Name.Text = player.DisplayName
+                    esp.Name.Position =
+                        Vector2.new(screenPos.X, screenPos.Y - height / 2 - 14)
+                    esp.Name.Color = color
+                    esp.Name.Visible = true
+
+                    esp.Distance.Text = string.format('%.0f studs', distance)
+                    esp.Distance.Position =
+                        Vector2.new(screenPos.X, screenPos.Y + height / 2 + 2)
+                    esp.Distance.Color = color
+                    esp.Distance.Visible = true
+
+                    local healthPercent = humanoid.Health / humanoid.MaxHealth
+                    local barHeight = height
+                    local barY = boxPos.Y
+                    local barX = boxPos.X - 5
+
+                    esp.HealthBarBG.From = Vector2.new(barX, barY)
+                    esp.HealthBarBG.To = Vector2.new(barX, barY + barHeight)
+                    esp.HealthBarBG.Visible = true
+
+                    esp.HealthBar.From = Vector2.new(barX, barY + barHeight)
+                    esp.HealthBar.To = Vector2.new(
+                        barX,
+                        barY + barHeight * (1 - healthPercent)
+                    )
+                    esp.HealthBar.Color = Color3.fromRGB(
+                        255 - 255 * healthPercent,
+                        255 * healthPercent,
+                        0
+                    )
+                    esp.HealthBar.Visible = true
+                else
+                    for _, obj in pairs(esp) do
+                        obj.Visible = false
+                    end
+                end
+            else
+                removeESP(player)
+            end
+        end
+    end
+end)
+
 --[[
 	WARNING: Heads up! This script has not been verified by ScriptBlox. Use at your own risk!
 ]]
@@ -2933,88 +3098,7 @@ else
             Default = false,
             Tooltip = 'Adds A Fake Hitbox On Your Target',
         })
-        Toggles.TargetHitbox:OnChanged(function()
-            -- LocalScript: ShowPlayerNamesThroughWalls
-            local Players = game:GetService('Players')
-            local LocalPlayer = Players.LocalPlayer
-
-            -- Function to create BillboardGui with player's name
-            local function createNameBillboard(player)
-                if player == LocalPlayer then
-                    return
-                end
-
-                local character = player.Character
-                    or player.CharacterAdded:Wait()
-                local head = character:WaitForChild('Head')
-
-                -- Avoid duplicates
-                if head:FindFirstChild('NameBillboard') then
-                    return
-                end
-
-                -- Create the BillboardGui with constant size (not based on distance)
-                local billboardGui = Instance.new('BillboardGui')
-                billboardGui.Name = 'NameBillboard'
-                billboardGui.Adornee = head
-                billboardGui.Size = UDim2.new(100, 200, 100, 50) -- Fixed size for all names (200x50 pixels)
-                billboardGui.StudsOffset = Vector3.new(0, 2.5, 0) -- Adjust height above player's head (you can tweak this value)
-                billboardGui.AlwaysOnTop = true
-                billboardGui.Active = true -- Allow interactions (e.g., clicking on the name)
-
-                -- Create the TextLabel for the player's name
-                local textLabel = Instance.new('TextLabel')
-                textLabel.Parent = billboardGui
-                textLabel.Size = UDim2.new(1, 0, 1, 0) -- This ensures the TextLabel takes up the full space of the BillboardGui
-                textLabel.BackgroundTransparency = 1
-                textLabel.Text = player.Name
-                textLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-                textLabel.TextStrokeColor3 = Color3.new(0, 0, 0)
-                textLabel.TextStrokeTransparency = 0
-                textLabel.TextScaled = false -- Disable automatic scaling based on name length
-                textLabel.Font = Enum.Font.SourceSansBold
-                textLabel.TextWrapped = true -- Ensures the name wraps if it's too long
-                textLabel.TextSize = 18 -- Set a fixed text size for all names
-
-                -- Center the text within the BillboardGui (ensures perfect alignment)
-                textLabel.AnchorPoint = Vector2.new(0.5, 0.5) -- This ensures the text is centered in the middle of the BillboardGui
-                textLabel.Position = UDim2.new(0.5, 0, 0.5, 0) -- Centers the text inside the BillboardGui
-
-                billboardGui.Parent = head
-            end
-
-            -- Automatically create name tags for all players (including those that are already in the game)
-            for _, player in pairs(Players:GetPlayers()) do
-                if player ~= LocalPlayer then
-                    -- Ensure that we add name tags for existing players
-                    player.CharacterAdded:Connect(function()
-                        wait(1) -- Wait for character to fully load
-                        createNameBillboard(player)
-                    end)
-
-                    -- Add the name tag immediately if the player has already spawned
-                    if player.Character then
-                        createNameBillboard(player)
-                    end
-                end
-            end
-
-            -- Handle new players who join the game
-            Players.PlayerAdded:Connect(function(player)
-                player.CharacterAdded:Connect(function()
-                    wait(1) -- Wait for character to fully load
-                    createNameBillboard(player)
-                end)
-            end)
-
-            -- Ensure name tags are recreated when a player respawns (after dying)
-            Players.PlayerAdded:Connect(function(player)
-                player.CharacterAdded:Connect(function()
-                    wait(1) -- Wait for character to fully load
-                    createNameBillboard(player)
-                end)
-            end)
-        end)
+        Toggles.TargetHitbox:OnChanged(function() end)
         Toggles.TargetHitbox:AddColorPicker('TargetHitboxColor', {
             Default = Color3.new(0, 1, 0),
             Title = 'Hitbox Color',
