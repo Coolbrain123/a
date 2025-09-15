@@ -284,6 +284,34 @@ Mouse.KeyDown:Connect(function(Key)
     end
 end)
 
+if getgenv().Serpent.Options.Stretched_Res == true then
+   getgenv().Resolution = {
+    ['.gg/scripters'] = 0.8252,
+}
+
+local Camera = workspace.CurrentCamera
+if getgenv().gg_scripters == nil then
+    game:GetService('RunService').RenderStepped:Connect(function()
+        Camera.CFrame = Camera.CFrame
+            * CFrame.new(
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                getgenv().Resolution['.gg/scripters'],
+                0,
+                0,
+                0,
+                1
+            )
+    end)
+end
+getgenv().gg_scripters = 'Aori0001'
+end 
+
 if getgenv().Serpent.FOV.Aimbot.UseFov == true then
     function NearestPerson()
         local closestPlayer
