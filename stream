@@ -78,14 +78,14 @@ local function SendNotification(text)
 end
 
 SendNotification('Injecting.')
-wait(1)
+wait(2.5)
 SendNotification('Loading Assets.')
-wait(1)
+wait(2.5)
 SendNotification('Bypassing Anticheat... ')
-wait(1)
+wait(2.5)
 SendNotification('Loading Into Workspace...')
 wait(3)
-SendNotification('Injected!')
+SendNotification('Successfully Injected!')
 
 --
 if getgenv().CheckIfScriptLoaded == true then
