@@ -77,13 +77,13 @@ local function SendNotification(text)
     )
 end
 
-SendNotification('Injecting.')
+SendNotification('Bypassing Anticheat...')
 wait(2.5)
-SendNotification('Loading Assets.')
-wait(2.5)
-SendNotification('Bypassing Anticheat... ')
+SendNotification('Loading Assets..')
 wait(2.5)
 SendNotification('Loading Into Workspace...')
+wait(2.5)
+SendNotification('Injecting.')
 wait(3)
 SendNotification('Successfully Injected!')
 
